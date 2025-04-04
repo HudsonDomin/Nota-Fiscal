@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Pck_Control;
+package com.mycompany.prj_nota.Pck_Control;
 
-import Pck_Model.ClienteModel;
+import com.mycompany.prj_nota.Pck_Model.ClienteModel;
 /**
  *
  * @author lab03aluno

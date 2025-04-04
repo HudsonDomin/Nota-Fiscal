@@ -2,12 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Pck_Model;
+package com.mycompany.prj_nota.Pck_Model;
 
-/**
- *
- * @author lab03aluno
- */
+import java.util.Date;
+
 public class PedidoModel {
     private int a02_codigo;
     private Date a02_data;
