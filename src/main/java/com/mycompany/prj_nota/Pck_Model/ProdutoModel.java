@@ -12,7 +12,7 @@ public class ProdutoModel {
    
     private int a03_codigo;
     private String a03_descricao;
-    private float a03_valorUnitario;
+    private double a03_valorUnitario;
     private int a03_estoque;
 
     public int getA03_codigo() {
@@ -31,11 +31,11 @@ public class ProdutoModel {
         this.a03_descricao = a03_descricao;
     }
 
-    public float getA03_valorUnitario() {
+    public double getA03_valorUnitario() {
         return a03_valorUnitario;
     }
 
-    public void setA03_valorUnitario(float a03_valorUnitario) {
+    public void setA03_valorUnitario(double a03_valorUnitario) {
         this.a03_valorUnitario = a03_valorUnitario;
     }
 

@@ -4,6 +4,8 @@
  */
 package com.mycompany.prj_nota.Pck_Model;
 
+import java.util.Date;
+
 /**
  *
  * @author lab03aluno
@@ -11,7 +13,7 @@ package com.mycompany.prj_nota.Pck_Model;
 public class PedidoModel {
     private int a02_codigo;
     private Date a02_data;
-    private float a02_valorTotal;
+    private double a02_valorTotal;
     private int a01_codigo;
 
     public int getA02_codigo() {
@@ -30,11 +32,11 @@ public class PedidoModel {
         this.a02_data = a02_data;
     }
 
-    public float getA02_valorTotal() {
+    public double getA02_valorTotal() {
         return a02_valorTotal;
     }
 
-    public void setA02_valorTotal(float a02_valorTotal) {
+    public void setA02_valorTotal(double a02_valorTotal) {
         this.a02_valorTotal = a02_valorTotal;
     }
 

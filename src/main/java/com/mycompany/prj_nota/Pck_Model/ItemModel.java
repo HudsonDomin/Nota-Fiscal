@@ -14,7 +14,7 @@ public class ItemModel {
      private int a02_codigo;
      
      private int a04_quantidade;
-     private int a04_valor_item;
+     private double a04_valorItem;
 
     public int getA04_codigo() {
         return a04_codigo;
@@ -48,12 +48,12 @@ public class ItemModel {
         this.a04_quantidade = a04_quantidade;
     }
 
-    public int getA04_valor_item() {
-        return a04_valor_item;
+    public double getA04_valorItem() {
+        return a04_valorItem;
     }
 
-    public void setA04_valor_item(int a04_valor_item) {
-        this.a04_valor_item = a04_valor_item;
+    public void setA04_valorItem(double a04_valorItem) {
+        this.a04_valorItem = a04_valorItem;
     }
      
      
