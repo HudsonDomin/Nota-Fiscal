@@ -14,7 +14,7 @@ public class ClienteModel {
     private String a01_endereco;
     private String a01_telefone;
     private String a01_cpf;
-    private float a01_credito;
+    private double a01_credito;
 
     public int getA01_codigo() {
         return a01_codigo;
@@ -56,11 +56,11 @@ public class ClienteModel {
         this.a01_cpf = a01_cpf;
     }
 
-    public float getA01_credito() {
+    public double getA01_credito() {
         return a01_credito;
     }
 
-    public void setA01_credito(float a01_credito) {
+    public void setA01_credito(double a01_credito) {
         this.a01_credito = a01_credito;
     }
     

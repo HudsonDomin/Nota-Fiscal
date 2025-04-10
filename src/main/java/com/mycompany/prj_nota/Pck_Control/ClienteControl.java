@@ -5,6 +5,8 @@
 package com.mycompany.prj_nota.Pck_Control;
 
 import com.mycompany.prj_nota.Pck_Model.ClienteModel;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author lab03aluno
@@ -27,7 +29,7 @@ public class ClienteControl {
         objClienteModel.setA01_codigo(iCodigo);
     }
     
-    public void atualizarCliente(int iCodigo, String sNome, String sEndereco,String sTelefone, String sCpf, float fCredito ){
+    public void atualizarCliente(int iCodigo, String sNome, String sEndereco,String sTelefone, String sCpf, double fCredito ){
         
         objClienteModel.setA01_codigo(iCodigo);
         objClienteModel.setA01_nome(sNome);
@@ -42,6 +44,10 @@ public class ClienteControl {
         
         objClienteModel.setA01_codigo(iCodigo);
         
+    }
+    
+    public List<ClienteModel> consultarClientes(){
+        return new ArrayList<>();
     }
   
 }

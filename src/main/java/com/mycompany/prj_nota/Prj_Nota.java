@@ -4,6 +4,7 @@
  */
 
 package com.mycompany.prj_nota;
+import com.mycompany.prj_nota.Pck_View.ClienteView;
 
 /**
  *
@@ -12,6 +13,8 @@ package com.mycompany.prj_nota;
 public class Prj_Nota {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("Rodando...");
+        ClienteView cv = new ClienteView();
+        cv.setVisible(true);
     }
 }
