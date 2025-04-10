@@ -4,12 +4,14 @@
  */
 package com.mycompany.prj_nota.Pck_View;
 
+import com.mycompany.prj_nota.Pck_Control.ProdutoControl;
 /**
  *
  * @author Aluno
  */
 public class ProdutoView extends javax.swing.JFrame {
-
+    // obj da classe ProdutoControl
+    ProdutoControl oProdutoControl = new ProdutoControl(); 
     /**
      * Creates new form ProdutoView
      */
@@ -34,9 +36,11 @@ public class ProdutoView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        valorUnitText = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        idText = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         descricaoText = new javax.swing.JTextArea();
+        valorUnitText = new javax.swing.JTextField();
         estoqueText = new javax.swing.JTextField();
         inserirButton = new javax.swing.JButton();
         excluirButton = new javax.swing.JButton();
@@ -104,6 +108,8 @@ public class ProdutoView extends javax.swing.JFrame {
 
         jLabel4.setText("Estoque");
 
+        jLabel5.setText("ID");
+
         descricaoText.setColumns(20);
         descricaoText.setLineWrap(true);
         descricaoText.setRows(5);
@@ -111,12 +117,32 @@ public class ProdutoView extends javax.swing.JFrame {
         jScrollPane3.setViewportView(descricaoText);
 
         inserirButton.setText("Inserir");
+        inserirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inserirButtonActionPerformed(evt);
+            }
+        });
 
         excluirButton.setText("Excluir");
+        excluirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirButtonActionPerformed(evt);
+            }
+        });
 
         alterarButton.setText("Alterar");
+        alterarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarButtonActionPerformed(evt);
+            }
+        });
 
         consultarButton.setText("Consultar");
+        consultarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultarButtonActionPerformed(evt);
+            }
+        });
 
         clienteMenu.setText("Clientes");
         jMenuBar1.add(clienteMenu);
@@ -141,30 +167,33 @@ public class ProdutoView extends javax.swing.JFrame {
                         .addGap(199, 199, 199)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(inserirButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(excluirButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(alterarButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(consultarButton))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(40, 40, 40)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(valorUnitText)
-                                    .addComponent(estoqueText, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                                    .addComponent(estoqueText, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(valorUnitText, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel5))
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(inserirButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(excluirButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(alterarButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(consultarButton)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -178,13 +207,17 @@ public class ProdutoView extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(21, 21, 21)
                                 .addComponent(jLabel2))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(valorUnitText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -210,6 +243,36 @@ public class ProdutoView extends javax.swing.JFrame {
         nv.setVisible(true);
         dispose();
     }//GEN-LAST:event_notaMenuMouseClicked
+
+    private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
+        oProdutoControl.inserirProduto(
+            /*Interger.parseInt(idText.getText())),*/
+            descricaoText.getText(), // String a03_descricao -> sDescricao
+            Double.parseDouble(valorUnitText.getText()), // Double a03_valorUnitario -> dValorUnitario
+            Integer.parseInt(estoqueText.getText()) // Int a03_estoque -> iEstoque
+        );
+    }//GEN-LAST:event_inserirButtonActionPerformed
+
+    private void excluirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirButtonActionPerformed
+        oProdutoControl.deletarProduto(
+                Integer.parseInt(idText.getText())
+        );
+    }//GEN-LAST:event_excluirButtonActionPerformed
+
+    private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
+        oProdutoControl.atualizarProduto(
+            Integer.parseInt(idText.getText()),
+            descricaoText.getText(),
+            Double.parseDouble(valorUnitText.getText()),
+            Integer.parseInt(estoqueText.getText())
+        );
+    }//GEN-LAST:event_alterarButtonActionPerformed
+
+    private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
+        oProdutoControl.consultarProduto(
+            Integer.parseInt(idText.getText())
+        );
+    }//GEN-LAST:event_consultarButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -253,11 +316,13 @@ public class ProdutoView extends javax.swing.JFrame {
     private javax.swing.JTextArea descricaoText;
     private javax.swing.JTextField estoqueText;
     private javax.swing.JButton excluirButton;
+    private javax.swing.JTextField idText;
     private javax.swing.JButton inserirButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
