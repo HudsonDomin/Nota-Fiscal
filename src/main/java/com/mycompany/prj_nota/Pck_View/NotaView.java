@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.prj_nota.Pck_View;
+import com.mycompany.prj_nota.Pck_Control.PedidoControl;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -123,6 +125,11 @@ public class NotaView extends javax.swing.JFrame {
 
         alterarButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         alterarButton.setText("alterar");
+        alterarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarButtonActionPerformed(evt);
+            }
+        });
 
         consultarButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         consultarButton.setText("consultar");
@@ -329,14 +336,29 @@ public class NotaView extends javax.swing.JFrame {
 
     private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
         // TODO add your handling code here:
+        //numeroText.getText();
+        //codigoClientCombo.getText();
+        //dataText.getText();
+        //nomeCombo.getText();
+        //cpfText.getText();
+        //enderecoText.getText();
+        PedidoControl pc = new PedidoControl();
+        String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
+        SimpleDateFormat dataPedido = new SimpleDateFormat("dd/MM/yyyy");
+        pc.inserirPedido(dataPedido.parse(dataText.getText()), Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+        
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
         // TODO add your handling code here:
+        PedidoControl pc = new PedidoControl();
+        pc.excluirPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_removerButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
         // TODO add your handling code here:
+        PedidoControl pc = new PedidoControl();
+        pc.consultarPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void inserirProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirProdutoButtonActionPerformed
@@ -354,6 +376,14 @@ public class NotaView extends javax.swing.JFrame {
     private void codigoitemTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoitemTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_codigoitemTextActionPerformed
+
+    private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
+        // TODO add your handling code here:
+        PedidoControl pc = new PedidoControl();
+        String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
+        SimpleDateFormat dataPedido = new SimpleDateFormat("dd/MM/yyyy");
+        pc.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido.parse(dataText.getText()), Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+    }//GEN-LAST:event_alterarButtonActionPerformed
 
     /**
      * @param args the command line arguments
