@@ -5,8 +5,8 @@ import com.mycompany.prj_nota.Pck_Model.ItemModel;
 public class ItemControl {
     ItemModel objItemModel = new ItemModel();
 
-    public void inserirItem(int iCodigo, int iProdutoCodigo, int iPedidoCodigo, int iQuantidade, double dValorTotal) {
-        objItemModel.setA04_codigo(iCodigo);
+    public void inserirItem(int iProdutoCodigo, int iPedidoCodigo, int iQuantidade, double dValorTotal) {
+        //objItemModel.setA04_codigo(iCodigo);
         objItemModel.setA03_codigo(iProdutoCodigo);
         objItemModel.setA02_codigo(iPedidoCodigo);
         objItemModel.setA04_quantidade(iQuantidade);

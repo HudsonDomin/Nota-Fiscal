@@ -4,7 +4,9 @@
  */
 package com.mycompany.prj_nota.Pck_View;
 import com.mycompany.prj_nota.Pck_Control.PedidoControl;
+import com.mycompany.prj_nota.Pck_Control.ItemControl;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -175,6 +177,11 @@ public class NotaView extends javax.swing.JFrame {
 
         alterarProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         alterarProdutoButton.setText("alterar");
+        alterarProdutoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarProdutoButtonActionPerformed(evt);
+            }
+        });
 
         consultarProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         consultarProdutoButton.setText("consultar");
@@ -236,6 +243,7 @@ public class NotaView extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(inserirProdutoButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(removerProdutoButton)
@@ -243,30 +251,33 @@ public class NotaView extends javax.swing.JFrame {
                                 .addComponent(alterarProdutoButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(consultarProdutoButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(codigoitemLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(codigoitemText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(codigoprodutoLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(codigoprodutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nomeprodutoLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nomeprodutoText, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(quantidadeLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(quantidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valorunitarioLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valorunitarioText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valoritemLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valoritemText, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(quantidadeLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(quantidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(valorunitarioLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(valorunitarioText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(valoritemLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(valoritemText, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(codigoitemLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(codigoitemText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(codigoprodutoLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(codigoprodutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nomeprodutoLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(nomeprodutoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 77, Short.MAX_VALUE)))))
                 .addGap(207, 207, 207))
         );
         layout.setVerticalGroup(
@@ -344,9 +355,13 @@ public class NotaView extends javax.swing.JFrame {
         //enderecoText.getText();
         PedidoControl pc = new PedidoControl();
         String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
-        SimpleDateFormat dataPedido = new SimpleDateFormat("dd/MM/yyyy");
-        pc.inserirPedido(dataPedido.parse(dataText.getText()), Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
-        
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            Date dataPedido = format.parse(dataText.getText());
+            pc.inserirPedido(dataPedido, Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+
+        }catch(Exception ex){
+        }        
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
@@ -363,14 +378,25 @@ public class NotaView extends javax.swing.JFrame {
 
     private void inserirProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirProdutoButtonActionPerformed
         // TODO add your handling code here:
+        ItemControl ic = new ItemControl();
+        String produtoSelecionado = codigoprodutoCombo.getSelectedItem().toString();
+        ic.inserirItem(Integer.parseInt(produtoSelecionado),
+                        Integer.parseInt(numeroText.getText()),
+                        Integer.parseInt(quantidadeText.getText()),
+                        Integer.parseInt(valoritemText.getText()));
+        
     }//GEN-LAST:event_inserirProdutoButtonActionPerformed
 
     private void removerProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerProdutoButtonActionPerformed
         // TODO add your handling code here:
+        ItemControl ic = new ItemControl();
+        ic.excluirItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_removerProdutoButtonActionPerformed
 
     private void consultarProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarProdutoButtonActionPerformed
         // TODO add your handling code here:
+        ItemControl ic = new ItemControl();
+        ic.consultarItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_consultarProdutoButtonActionPerformed
 
     private void codigoitemTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoitemTextActionPerformed
@@ -381,9 +407,25 @@ public class NotaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         PedidoControl pc = new PedidoControl();
         String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
-        SimpleDateFormat dataPedido = new SimpleDateFormat("dd/MM/yyyy");
-        pc.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido.parse(dataText.getText()), Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            Date dataPedido = format.parse(dataText.getText());
+            pc.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+
+
+        }catch(Exception ex){
+        }  
     }//GEN-LAST:event_alterarButtonActionPerformed
+
+    private void alterarProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarProdutoButtonActionPerformed
+        // TODO add your handling code here:
+        ItemControl ic = new ItemControl();
+        String produtoSelecionado = codigoprodutoCombo.getSelectedItem().toString();
+        ic.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
+                        Integer.parseInt(numeroText.getText()),
+                        Integer.parseInt(quantidadeText.getText()),
+                        Integer.parseInt(valoritemText.getText()));
+    }//GEN-LAST:event_alterarProdutoButtonActionPerformed
 
     /**
      * @param args the command line arguments
