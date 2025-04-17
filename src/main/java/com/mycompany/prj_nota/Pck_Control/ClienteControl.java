@@ -7,10 +7,7 @@ package com.mycompany.prj_nota.Pck_Control;
 import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.ClienteModel;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -78,12 +75,45 @@ public class ClienteControl {
         }
     }
     
-    public void consultarCliente(int iCodigo){
+    public ClienteModel consultarCliente(int iCodigo){
         objClienteModel.setA01_codigo(iCodigo);
+        try{
+            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM Cliente_01 WHERE A01_id = ?");
+            stmt.setInt(1, objClienteModel.getA01_codigo());
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                objClienteModel.setA01_nome(rs.getString("A01_nome"));
+                objClienteModel.setA01_cpf(rs.getString("A01_cpf"));
+                objClienteModel.setA01_endereco(rs.getString("A01_endereco"));
+                objClienteModel.setA01_telefone(rs.getString("A01_telefone"));
+                objClienteModel.setA01_credito(rs.getDouble("A01_credito"));
+                return objClienteModel;
+            }
+        }catch (SQLException e){
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+        return null;
     }
     
     public List<ClienteModel> consultarClientes(){
-        return new ArrayList<>();
+        List<ClienteModel> clientes = new ArrayList<>();
+        try{
+            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM Cliente_01");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                ClienteModel objClienteModel = new ClienteModel();
+                objClienteModel.setA01_nome(rs.getString("A01_nome"));
+                objClienteModel.setA01_cpf(rs.getString("A01_cpf"));
+                objClienteModel.setA01_endereco(rs.getString("A01_endereco"));
+                objClienteModel.setA01_telefone(rs.getString("A01_telefone"));
+                objClienteModel.setA01_credito(rs.getDouble("A01_credito"));
+                clientes.add(objClienteModel);
+            }
+        }catch (SQLException e){
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+
+        return clientes;
     }
   
 }
