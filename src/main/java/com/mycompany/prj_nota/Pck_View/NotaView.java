@@ -367,7 +367,7 @@ public class NotaView extends javax.swing.JFrame {
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
         // TODO add your handling code here:
         PedidoControl pc = new PedidoControl();
-        pc.excluirPedido(Integer.parseInt(numeroText.getText()));
+        pc.removerPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_removerButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
