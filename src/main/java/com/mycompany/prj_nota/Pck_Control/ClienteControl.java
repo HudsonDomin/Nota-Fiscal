@@ -67,12 +67,13 @@ public class ClienteControl {
         objClienteModel.setA01_credito(fCredito);
 
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdCliente(?, ?, ?, ?, ?)}");
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdCliente(?, ?, ?, ?, ?, ?)}");
             stmt.setInt(1, objClienteModel.getA01_codigo());
             stmt.setString(2, objClienteModel.getA01_nome());
             stmt.setString(3, objClienteModel.getA01_endereco());
-            stmt.setString(4, objClienteModel.getA01_cpf());
-            stmt.setDouble(5, objClienteModel.getA01_credito());
+            stmt.setString(4, objClienteModel.getA01_telefone());
+            stmt.setString(5, objClienteModel.getA01_cpf());
+            stmt.setDouble(6, objClienteModel.getA01_credito());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao atualizar: " + e.getMessage());
