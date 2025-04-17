@@ -12,7 +12,6 @@ public class ItemModel {
      private int a04_codigo;
      private int a03_codigo;
      private int a02_codigo;
-     
      private int a04_quantidade;
      private double a04_valorItem;
 
@@ -55,6 +54,4 @@ public class ItemModel {
     public void setA04_valorItem(double a04_valorItem) {
         this.a04_valorItem = a04_valorItem;
     }
-     
-     
 }
