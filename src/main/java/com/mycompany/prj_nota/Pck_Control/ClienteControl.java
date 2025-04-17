@@ -7,7 +7,10 @@ package com.mycompany.prj_nota.Pck_Control;
 import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.ClienteModel;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 /**
