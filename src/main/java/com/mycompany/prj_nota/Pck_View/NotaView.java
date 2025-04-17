@@ -390,7 +390,7 @@ public class NotaView extends javax.swing.JFrame {
     private void removerProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerProdutoButtonActionPerformed
         // TODO add your handling code here:
         ItemControl ic = new ItemControl();
-        ic.excluirItem(Integer.parseInt(codigoitemText.getText()));
+        ic.removerItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_removerProdutoButtonActionPerformed
 
     private void consultarProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarProdutoButtonActionPerformed
