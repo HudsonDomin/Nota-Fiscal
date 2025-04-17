@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexaoMySql  {
-    private final String sDriver = "com.mysql.jdbc.driver";
+    private final String sDriver = "com.mysql.cj.jdbc.Driver";
     private final String sUrl = "jdbc:mysql://localhost:3306/db_nota?noAcessToProcedureBodies=true&useSSL=false";
     private final String sLogin = "root";
     private final String sSenha = "";
