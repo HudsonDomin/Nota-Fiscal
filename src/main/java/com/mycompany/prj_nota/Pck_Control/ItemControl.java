@@ -26,11 +26,11 @@ public class ItemControl {
         objItemModel.setA04_valorItem(dValorTotal);
 
         try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsItem_04}");
-            stmt.setInt(2, objItemModel.getA03_codigo());
-            stmt.setInt(3, objItemModel.getA02_codigo());
-            stmt.setInt(4, objItemModel.getA04_quantidade());
-            stmt.setDouble(5, objItemModel.getA04_valorItem());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsItem_04(?, ?, ?, ?)}");
+            stmt.setInt(1, objItemModel.getA03_codigo());
+            stmt.setInt(2, objItemModel.getA02_codigo());
+            stmt.setInt(3, objItemModel.getA04_quantidade());
+            stmt.setDouble(4, objItemModel.getA04_valorItem());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir: " + e.getMessage());
@@ -40,7 +40,7 @@ public class ItemControl {
     public void removerItem(int iCodigo) {
         objItemModel.setA04_codigo(iCodigo);
         try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_Delitem_04}");
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_Delitem_04(?)}");
             stmt.setInt(1, objItemModel.getA04_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class ItemControl {
         objItemModel.setA04_valorItem(dValorTotal);
 
         try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdItem04}");
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdItem04(?, ?, ?, ?, ?)}");
             stmt.setInt(1, objItemModel.getA04_codigo());
             stmt.setInt(2, objItemModel.getA03_codigo());
             stmt.setInt(3, objItemModel.getA02_codigo());
