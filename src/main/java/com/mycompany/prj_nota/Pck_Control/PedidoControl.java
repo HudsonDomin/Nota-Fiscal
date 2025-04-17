@@ -30,10 +30,10 @@ public class PedidoControl {
         objPedidoModel.setA02_valorTotal(fValorTotal);
         objPedidoModel.setA01_codigo(iCodigo);
         try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsPedido}");
-            stmt.setDate("V_A02_data", (java.sql.Date) objPedidoModel.getA02_data());
-            stmt.setDouble("V_A02_valorTotal", objPedidoModel.getA02_valorTotal());
-            stmt.setInt("V_A01_codigo", objPedidoModel.getA01_codigo());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}");
+            stmt.setDate(1, (java.sql.Date) objPedidoModel.getA02_data());
+            stmt.setDouble(2, objPedidoModel.getA02_valorTotal());
+            stmt.setInt(3, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
@@ -43,8 +43,8 @@ public class PedidoControl {
     public void removerPedido(int iNumero){
         objPedidoModel.setA01_codigo(iNumero);
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_DelPedido}");
-            stmt.setInt("V_A02_numero", objPedidoModel.getA02_codigo());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_DelPedido(?)}");
+            stmt.setInt(1, objPedidoModel.getA02_codigo());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao remover pedido: " + e.getMessage());
@@ -61,11 +61,11 @@ public class PedidoControl {
 
 
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdPedido}");
-            stmt.setInt("V_A02_numero", objPedidoModel.getA01_codigo());
-            stmt.setDate("V_A02_data", (java.sql.Date) objPedidoModel.getA02_data());
-            stmt.setDouble("V_A02_valorTotal", objPedidoModel.getA02_valorTotal());
-            stmt.setInt("V_A01_codigo", objPedidoModel.getA01_codigo());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdPedido(?, ?, ?, ?)}");
+            stmt.setInt(1, objPedidoModel.getA02_codigo());
+            stmt.setDate(2, (java.sql.Date) objPedidoModel.getA02_data());
+            stmt.setDouble(3, objPedidoModel.getA02_valorTotal());
+            stmt.setInt(4, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao atualizar pedido: " + e.getMessage());

@@ -34,11 +34,12 @@ public class ClienteControl {
         objClienteModel.setA01_credito(dCredito);
 
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsCliente}");
-            stmt.setString("V_A01_nome", objClienteModel.getA01_nome());
-            stmt.setString("V_A01_endereco", objClienteModel.getA01_endereco());
-            stmt.setString("V_A01_cpf", objClienteModel.getA01_cpf());
-            stmt.setDouble("V_A01_credito", objClienteModel.getA01_credito());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsCliente(?, ?, ?, ?, ?)}");
+            stmt.setString(1, objClienteModel.getA01_nome());
+            stmt.setString(2, objClienteModel.getA01_endereco());
+            stmt.setString(3, objClienteModel.getA01_telefone());
+            stmt.setString(4, objClienteModel.getA01_cpf());
+            stmt.setDouble(5, objClienteModel.getA01_credito());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao inserir: " + e.getMessage());
@@ -48,8 +49,8 @@ public class ClienteControl {
     public void removerCliente(int iCodigo){
         objClienteModel.setA01_codigo(iCodigo);
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_DelCliente}");
-            stmt.setInt("V_A01_codigo", objClienteModel.getA01_codigo());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_DelCliente(?)}");
+            stmt.setInt(1, objClienteModel.getA01_codigo());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao remover cliente: " + e.getMessage());
@@ -66,12 +67,12 @@ public class ClienteControl {
         objClienteModel.setA01_credito(fCredito);
 
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdCliente}");
-            stmt.setInt("V_A01_codigo", objClienteModel.getA01_codigo());
-            stmt.setString("V_A01_nome", objClienteModel.getA01_nome());
-            stmt.setString("V_A01_endereco", objClienteModel.getA01_endereco());
-            stmt.setString("V_A01_cpf", objClienteModel.getA01_cpf());
-            stmt.setDouble("V_A01_credito", objClienteModel.getA01_credito());
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdCliente(?, ?, ?, ?, ?)}");
+            stmt.setInt(1, objClienteModel.getA01_codigo());
+            stmt.setString(2, objClienteModel.getA01_nome());
+            stmt.setString(3, objClienteModel.getA01_endereco());
+            stmt.setString(4, objClienteModel.getA01_cpf());
+            stmt.setDouble(5, objClienteModel.getA01_credito());
             stmt.executeQuery();
         }catch (SQLException e){
             System.out.println("Erro ao atualizar: " + e.getMessage());
