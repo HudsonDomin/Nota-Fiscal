@@ -5,6 +5,11 @@
 package com.mycompany.prj_nota.Pck_View;
 
 import com.mycompany.prj_nota.Pck_Control.ProdutoControl;
+import com.mycompany.prj_nota.Pck_Model.ProdutoModel;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author Aluno
@@ -251,12 +256,14 @@ public class ProdutoView extends javax.swing.JFrame {
             Double.parseDouble(valorUnitText.getText()), // Double a03_valorUnitario -> dValorUnitario
             Integer.parseInt(estoqueText.getText()) // Int a03_estoque -> iEstoque
         );
+        atualizarTabelaProdutos();
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void excluirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirButtonActionPerformed
         oProdutoControl.deletarProduto(
                 Integer.parseInt(idText.getText())
         );
+        atualizarTabelaProdutos();
     }//GEN-LAST:event_excluirButtonActionPerformed
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
@@ -266,14 +273,25 @@ public class ProdutoView extends javax.swing.JFrame {
             Double.parseDouble(valorUnitText.getText()),
             Integer.parseInt(estoqueText.getText())
         );
+        atualizarTabelaProdutos();
     }//GEN-LAST:event_alterarButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
-        oProdutoControl.consultarProduto(
-            Integer.parseInt(idText.getText())
-        );
+        atualizarTabelaProdutos();
     }//GEN-LAST:event_consultarButtonActionPerformed
-
+    private void atualizarTabelaProdutos() {
+        List<ProdutoModel> produtos = oProdutoControl.consultarProdutos();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+        for (ProdutoModel p : produtos) {
+            model.addRow(new Object[]{
+                    p.getA03_codigo(),
+                    p.getA03_descricao(),
+                    p.getA03_valorUnitario(),
+                    p.getA03_estoque()
+            });
+        }
+    }
     /**
      * @param args the command line arguments
      */

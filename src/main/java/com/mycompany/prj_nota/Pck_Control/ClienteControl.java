@@ -83,7 +83,7 @@ public class ClienteControl {
     public ClienteModel consultarCliente(int iCodigo){
         objClienteModel.setA01_codigo(iCodigo);
         try{
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM Cliente_01 WHERE A01_id = ?");
+            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM CLIENTE_01 WHERE A01_id = ?");
             stmt.setInt(1, objClienteModel.getA01_codigo());
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
@@ -103,10 +103,11 @@ public class ClienteControl {
     public List<ClienteModel> consultarClientes(){
         List<ClienteModel> clientes = new ArrayList<>();
         try{
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM Cliente_01");
+            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM CLIENTE_01");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 ClienteModel objClienteModel = new ClienteModel();
+                objClienteModel.setA01_codigo(rs.getInt("A01_codigo"));
                 objClienteModel.setA01_nome(rs.getString("A01_nome"));
                 objClienteModel.setA01_cpf(rs.getString("A01_cpf"));
                 objClienteModel.setA01_endereco(rs.getString("A01_endereco"));

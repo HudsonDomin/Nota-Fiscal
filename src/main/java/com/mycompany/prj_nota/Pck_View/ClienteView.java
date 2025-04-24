@@ -5,6 +5,8 @@
 package com.mycompany.prj_nota.Pck_View;
 import com.mycompany.prj_nota.Pck_Control.ClienteControl;
 import com.mycompany.prj_nota.Pck_Model.ClienteModel;
+import com.mycompany.prj_nota.Pck_Model.ProdutoModel;
+
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -258,6 +260,7 @@ public class ClienteView extends javax.swing.JFrame {
         // TODO add your handling code here:
         ClienteControl cc = new ClienteControl();
         cc.inserirCliente(nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Float.parseFloat(creditoText.getText()));
+        atualizarTabelaClientes();
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void produtoMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produtoMenuMouseClicked
@@ -271,6 +274,7 @@ public class ClienteView extends javax.swing.JFrame {
         // TODO add your handling code here:
         ClienteControl cc = new ClienteControl();
         cc.removerCliente(Integer.parseInt(idText.getText()));
+        atualizarTabelaClientes();
     }//GEN-LAST:event_excluirButtonActionPerformed
 
     private void idTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTextActionPerformed
@@ -281,25 +285,30 @@ public class ClienteView extends javax.swing.JFrame {
         // TODO add your handling code here:
         ClienteControl cc = new ClienteControl();
         cc.atualizarCliente(Integer.parseInt(idText.getText()), nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Double.parseDouble(creditoText.getText()));
+        atualizarTabelaClientes();
     }//GEN-LAST:event_alterarButtonActionPerformed
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
-    ClienteControl cc = new ClienteControl();
-    List<ClienteModel> clientes = cc.consultarClientes();
-
-    DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();
-    model.setRowCount(0);
-
-    for (ClienteModel c : clientes) {
-        model.addRow(new Object[]{
-            c.getA01_codigo(),
-            c.getA01_nome(),
-            c.getA01_endereco(),
-            c.getA01_telefone(),
-            c.getA01_cpf(),
-            c.getA01_credito()
-        });
-    }
+        atualizarTabelaClientes();
     }//GEN-LAST:event_consultarButtonActionPerformed
+
+    private void atualizarTabelaClientes() {
+        ClienteControl cc = new ClienteControl();
+        List<ClienteModel> clientes = cc.consultarClientes();
+
+        DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();
+        model.setRowCount(0);
+
+        for (ClienteModel c : clientes) {
+            model.addRow(new Object[]{
+                    c.getA01_codigo(),
+                    c.getA01_nome(),
+                    c.getA01_endereco(),
+                    c.getA01_telefone(),
+                    c.getA01_cpf(),
+                    c.getA01_credito()
+            });
+        }
+    }
 
     private void notaMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notaMenuMouseClicked
         // TODO add your handling code here:

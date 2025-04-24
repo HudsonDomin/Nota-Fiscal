@@ -21,14 +21,13 @@ public class ProdutoControl {
     public ProdutoControl(){
         objConexaoMySql.getConnection();
     }
-    public void inserirProduto(/*int iCodigo,*/ String sDescricao, double dValorUnitario, int iEstoque){
-        /*objProdutoModel.setA03_codigo(iCodigo);*/
+    public void inserirProduto(String sDescricao, double dValorUnitario, int iEstoque){
         objProdutoModel.setA03_descricao(sDescricao);
         objProdutoModel.setA03_valorUnitario(dValorUnitario);
         objProdutoModel.setA03_estoque(iEstoque);
         
         try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsProduto}");
+            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsProduto(?, ?, ?)}");
             stmt.setString(1, objProdutoModel.getA03_descricao());
             stmt.setDouble(2, objProdutoModel.getA03_valorUnitario());
             stmt.setInt(3, objProdutoModel.getA03_estoque());
@@ -68,7 +67,7 @@ public class ProdutoControl {
         }
     }
 
-    public void consultarProduto(int iCodigo){
+    public ProdutoModel consultarProduto(int iCodigo){
         objProdutoModel.setA03_codigo(iCodigo);
         
         try{
@@ -77,6 +76,7 @@ public class ProdutoControl {
             ResultSet rs = stmt.executeQuery();
             
             if(rs.next()){
+                objProdutoModel.setA03_codigo(rs.getInt("A03_codigo"));
                 objProdutoModel.setA03_descricao(rs.getString("A03_descricao"));
                 objProdutoModel.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
                 objProdutoModel.setA03_estoque(rs.getInt("A03_estoque"));
@@ -94,6 +94,7 @@ public class ProdutoControl {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 ProdutoModel objProdutoModel = new ProdutoModel();
+                objProdutoModel.setA03_codigo(rs.getInt("A03_codigo"));
                 objProdutoModel.setA03_descricao(rs.getString("A03_descricao"));
                 objProdutoModel.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
                 objProdutoModel.setA03_estoque(rs.getInt("A03_estoque"));
