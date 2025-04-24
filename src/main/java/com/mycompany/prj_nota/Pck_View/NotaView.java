@@ -3,10 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.prj_nota.Pck_View;
+import com.mycompany.prj_nota.Pck_Control.ClienteControl;
 import com.mycompany.prj_nota.Pck_Control.PedidoControl;
 import com.mycompany.prj_nota.Pck_Control.ItemControl;
+import com.mycompany.prj_nota.Pck_Control.ProdutoControl;
+import com.mycompany.prj_nota.Pck_Model.ClienteModel;
+import com.mycompany.prj_nota.Pck_Model.PedidoModel;
+import com.mycompany.prj_nota.Pck_Model.ProdutoModel;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -32,15 +39,13 @@ public class NotaView extends javax.swing.JFrame {
 
         notaLabel = new javax.swing.JLabel();
         numeroLabel = new javax.swing.JLabel();
-        codigoclienteCombo = new javax.swing.JComboBox<>();
+        codigoClienteCombo = new javax.swing.JComboBox<>();
         codigoclienteLabel = new javax.swing.JLabel();
         cpfLabel = new javax.swing.JLabel();
         numeroText = new javax.swing.JTextField();
         cpfText = new javax.swing.JTextField();
         dataLabel = new javax.swing.JLabel();
         dataText = new javax.swing.JTextField();
-        nomeLabel = new javax.swing.JLabel();
-        nomeCombo = new javax.swing.JComboBox<>();
         enderecoLabel = new javax.swing.JLabel();
         enderecoText = new javax.swing.JTextField();
         inserirButton = new javax.swing.JButton();
@@ -51,19 +56,20 @@ public class NotaView extends javax.swing.JFrame {
         codigoitemLabel = new javax.swing.JLabel();
         codigoitemText = new javax.swing.JTextField();
         codigoprodutoLabel = new javax.swing.JLabel();
-        codigoprodutoCombo = new javax.swing.JComboBox<>();
-        nomeprodutoText = new javax.swing.JTextField();
-        nomeprodutoLabel = new javax.swing.JLabel();
+        codigoProdutoCombo = new javax.swing.JComboBox<>();
         quantidadeLabel = new javax.swing.JLabel();
-        valorunitarioLabel = new javax.swing.JLabel();
         valoritemLabel = new javax.swing.JLabel();
         quantidadeText = new javax.swing.JTextField();
-        valorunitarioText = new javax.swing.JTextField();
         valoritemText = new javax.swing.JTextField();
-        inserirProdutoButton = new javax.swing.JButton();
-        removerProdutoButton = new javax.swing.JButton();
-        alterarProdutoButton = new javax.swing.JButton();
-        consultarProdutoButton = new javax.swing.JButton();
+        inserirItemButton = new javax.swing.JButton();
+        removerItemButton = new javax.swing.JButton();
+        alterarItemButton = new javax.swing.JButton();
+        consultarItemButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        codigoPedidoCombo = new javax.swing.JComboBox<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        clientesMenu = new javax.swing.JMenu();
+        produtoMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,8 +79,18 @@ public class NotaView extends javax.swing.JFrame {
         numeroLabel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         numeroLabel.setText("Numero nota:");
 
-        codigoclienteCombo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        codigoclienteCombo.setDoubleBuffered(true);
+        codigoClienteCombo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        codigoClienteCombo.setDoubleBuffered(true);
+        codigoClienteCombo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                codigoClienteComboMouseClicked(evt);
+            }
+        });
+        codigoClienteCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codigoClienteComboActionPerformed(evt);
+            }
+        });
 
         codigoclienteLabel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         codigoclienteLabel.setText("Codigo cliente:");
@@ -97,11 +113,6 @@ public class NotaView extends javax.swing.JFrame {
 
         dataText.setEditable(false);
         dataText.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-
-        nomeLabel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        nomeLabel.setText("Nome:");
-
-        nomeCombo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         enderecoLabel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         enderecoLabel.setText("Endereço");
@@ -151,139 +162,177 @@ public class NotaView extends javax.swing.JFrame {
 
         codigoprodutoLabel.setText("Codigo Produto:");
 
-        nomeprodutoLabel.setText("Nome produto:");
+        codigoProdutoCombo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                codigoProdutoComboMouseClicked(evt);
+            }
+        });
+        codigoProdutoCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codigoProdutoComboActionPerformed(evt);
+            }
+        });
 
         quantidadeLabel.setText("Quantidade:");
 
-        valorunitarioLabel.setText("Valor unitario:");
-
         valoritemLabel.setText("Valor item:");
 
-        inserirProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        inserirProdutoButton.setText("inserir");
-        inserirProdutoButton.addActionListener(new java.awt.event.ActionListener() {
+        inserirItemButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        inserirItemButton.setText("inserir");
+        inserirItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inserirProdutoButtonActionPerformed(evt);
+                inserirItemButtonActionPerformed(evt);
             }
         });
 
-        removerProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        removerProdutoButton.setText("remover");
-        removerProdutoButton.addActionListener(new java.awt.event.ActionListener() {
+        removerItemButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        removerItemButton.setText("remover");
+        removerItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removerProdutoButtonActionPerformed(evt);
+                removerItemButtonActionPerformed(evt);
             }
         });
 
-        alterarProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        alterarProdutoButton.setText("alterar");
-        alterarProdutoButton.addActionListener(new java.awt.event.ActionListener() {
+        alterarItemButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        alterarItemButton.setText("alterar");
+        alterarItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alterarProdutoButtonActionPerformed(evt);
+                alterarItemButtonActionPerformed(evt);
             }
         });
 
-        consultarProdutoButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        consultarProdutoButton.setText("consultar");
-        consultarProdutoButton.addActionListener(new java.awt.event.ActionListener() {
+        consultarItemButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        consultarItemButton.setText("consultar");
+        consultarItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                consultarProdutoButtonActionPerformed(evt);
+                consultarItemButtonActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Código Pedido");
+
+        codigoPedidoCombo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                codigoPedidoComboMouseClicked(evt);
+            }
+        });
+        codigoPedidoCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codigoPedidoComboActionPerformed(evt);
+            }
+        });
+
+        clientesMenu.setText("Clientes");
+        clientesMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clientesMenuMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(clientesMenu);
+
+        produtoMenu.setText("Produtos");
+        produtoMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                produtoMenuMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(produtoMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
+                        .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(quantidadeLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(quantidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(codigoitemLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(codigoitemText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(codigoprodutoLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(codigoProdutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(codigoPedidoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(valoritemLabel)
+                                .addGap(21, 21, 21)
+                                .addComponent(valoritemText, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(165, 165, 165)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(dataLabel)
+                                            .addComponent(notaLabel))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(dataText, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addComponent(cpfLabel)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(numeroLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(numeroText, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(codigoclienteLabel)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(codigoclienteCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(cpfLabel)
+                                        .addComponent(codigoClienteCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(enderecoLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(enderecoText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(67, 67, 67)
+                                        .addComponent(inserirButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cpfText)))
-                                .addGap(38, 38, 38)
-                                .addComponent(nomeLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nomeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(165, 165, 165)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(dataLabel)
-                                    .addComponent(notaLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dataText, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(inserirButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(removerButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(alterarButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(consultarButton))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(enderecoLabel)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(enderecoText, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(inserirProdutoButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(removerProdutoButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(alterarProdutoButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(consultarProdutoButton))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(quantidadeLabel)
+                                        .addComponent(removerButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(quantidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(alterarButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(valorunitarioLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(valorunitarioText, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(valoritemLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(valoritemText, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(codigoitemLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(codigoitemText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(codigoprodutoLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(codigoprodutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nomeprodutoLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nomeprodutoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 77, Short.MAX_VALUE)))))
-                .addGap(207, 207, 207))
+                                        .addComponent(consultarButton)))
+                                .addGap(54, 54, 54)))
+                        .addGap(74, 74, 74))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(inserirItemButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removerItemButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(alterarItemButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(consultarItemButton)
+                        .addGap(130, 130, 130))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(26, 26, 26)
                 .addComponent(notaLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -293,49 +342,43 @@ public class NotaView extends javax.swing.JFrame {
                     .addComponent(dataLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(codigoclienteCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(codigoClienteCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(codigoclienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeLabel)
-                    .addComponent(nomeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cpfLabel)
                     .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enderecoLabel)
                     .addComponent(enderecoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inserirButton)
                     .addComponent(consultarButton)
                     .addComponent(alterarButton)
                     .addComponent(removerButton))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codigoitemLabel)
                     .addComponent(codigoitemText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(codigoprodutoLabel)
-                    .addComponent(codigoprodutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeprodutoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeprodutoLabel))
+                    .addComponent(codigoProdutoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(codigoPedidoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(quantidadeLabel)
-                    .addComponent(valorunitarioLabel)
                     .addComponent(valoritemLabel)
                     .addComponent(quantidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(valorunitarioText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(valoritemText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inserirProdutoButton)
-                    .addComponent(consultarProdutoButton)
-                    .addComponent(alterarProdutoButton)
-                    .addComponent(removerProdutoButton))
-                .addContainerGap(156, Short.MAX_VALUE))
+                    .addComponent(inserirItemButton)
+                    .addComponent(consultarItemButton)
+                    .addComponent(alterarItemButton)
+                    .addComponent(removerItemButton))
+                .addContainerGap())
         );
 
         pack();
@@ -354,13 +397,13 @@ public class NotaView extends javax.swing.JFrame {
         //cpfText.getText();
         //enderecoText.getText();
         PedidoControl pc = new PedidoControl();
-        String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
         try{
-            Date dataPedido = format.parse(dataText.getText());
-            pc.inserirPedido(dataPedido, Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+            Date dataPedido = new Date();
+            pc.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
 
-        }catch(Exception ex){
+        }catch(NumberFormatException e){
+            System.out.println(e.toString());
         }        
     }//GEN-LAST:event_inserirButtonActionPerformed
 
@@ -376,28 +419,28 @@ public class NotaView extends javax.swing.JFrame {
         pc.consultarPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_consultarButtonActionPerformed
 
-    private void inserirProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirProdutoButtonActionPerformed
+    private void inserirItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirItemButtonActionPerformed
         // TODO add your handling code here:
         ItemControl ic = new ItemControl();
-        String produtoSelecionado = codigoprodutoCombo.getSelectedItem().toString();
+        String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
         ic.inserirItem(Integer.parseInt(produtoSelecionado),
-                        Integer.parseInt(numeroText.getText()),
+                        Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
                         Integer.parseInt(quantidadeText.getText()),
                         Integer.parseInt(valoritemText.getText()));
         
-    }//GEN-LAST:event_inserirProdutoButtonActionPerformed
+    }//GEN-LAST:event_inserirItemButtonActionPerformed
 
-    private void removerProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerProdutoButtonActionPerformed
+    private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
         // TODO add your handling code here:
         ItemControl ic = new ItemControl();
         ic.removerItem(Integer.parseInt(codigoitemText.getText()));
-    }//GEN-LAST:event_removerProdutoButtonActionPerformed
+    }//GEN-LAST:event_removerItemButtonActionPerformed
 
-    private void consultarProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarProdutoButtonActionPerformed
+    private void consultarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarItemButtonActionPerformed
         // TODO add your handling code here:
         ItemControl ic = new ItemControl();
         ic.consultarItem(Integer.parseInt(codigoitemText.getText()));
-    }//GEN-LAST:event_consultarProdutoButtonActionPerformed
+    }//GEN-LAST:event_consultarItemButtonActionPerformed
 
     private void codigoitemTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoitemTextActionPerformed
         // TODO add your handling code here:
@@ -406,7 +449,7 @@ public class NotaView extends javax.swing.JFrame {
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
         PedidoControl pc = new PedidoControl();
-        String clienteSelecionado = codigoclienteCombo.getSelectedItem().toString();
+        String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try{
             Date dataPedido = format.parse(dataText.getText());
@@ -417,15 +460,92 @@ public class NotaView extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_alterarButtonActionPerformed
 
-    private void alterarProdutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarProdutoButtonActionPerformed
+    private void alterarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarItemButtonActionPerformed
         // TODO add your handling code here:
         ItemControl ic = new ItemControl();
-        String produtoSelecionado = codigoprodutoCombo.getSelectedItem().toString();
+        String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
         ic.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
                         Integer.parseInt(numeroText.getText()),
                         Integer.parseInt(quantidadeText.getText()),
                         Integer.parseInt(valoritemText.getText()));
-    }//GEN-LAST:event_alterarProdutoButtonActionPerformed
+    }//GEN-LAST:event_alterarItemButtonActionPerformed
+
+    private void clientesMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientesMenuMouseClicked
+        // TODO add your handling code here:
+        ClienteView cv = new ClienteView();
+        cv.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_clientesMenuMouseClicked
+
+    private void produtoMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produtoMenuMouseClicked
+        // TODO add your handling code here:
+        ProdutoView pv = new ProdutoView();
+        pv.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_produtoMenuMouseClicked
+
+    private void codigoClienteComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoClienteComboMouseClicked
+        // TODO add your handling code here:
+        ClienteControl cc = new ClienteControl();
+        List<ClienteModel> clientes = cc.consultarClientes();
+        codigoClienteCombo.removeAllItems();
+        for(ClienteModel c : clientes ){
+            codigoClienteCombo.addItem(String.valueOf(c.getA01_codigo()));
+        }
+    }//GEN-LAST:event_codigoClienteComboMouseClicked
+
+    private void codigoProdutoComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoProdutoComboMouseClicked
+        // TODO add your handling code here:
+        ProdutoControl pc = new ProdutoControl();
+        List<ProdutoModel> produtos = pc.consultarProdutos();
+        if(produtos.isEmpty()){
+            codigoProdutoCombo.addItem("0");
+        }
+        for(ProdutoModel p : produtos){
+            codigoProdutoCombo.addItem(String.valueOf(p.getA03_codigo()));
+        }
+    }//GEN-LAST:event_codigoProdutoComboMouseClicked
+
+    private void codigoClienteComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoClienteComboActionPerformed
+        // TODO add your handling code here:
+       String clienteSelecionado = (String) codigoClienteCombo.getSelectedItem();
+    
+    try {
+        Integer codigoClienteSelecionado = Integer.parseInt(clienteSelecionado);
+        
+        ClienteControl cc = new ClienteControl();
+        ClienteModel cliente = cc.consultarCliente(codigoClienteSelecionado);
+        
+        cpfText.setText(cliente.getA01_cpf());
+        enderecoText.setText(cliente.getA01_endereco());
+        
+        Date dataAtual = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        dataText.setText(formato.format(dataAtual));
+        
+    } catch (NumberFormatException e) {
+        System.err.println("Erro ao converter o código do cliente: " + e.getMessage());
+    }
+    }//GEN-LAST:event_codigoClienteComboActionPerformed
+
+    private void codigoPedidoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoPedidoComboActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_codigoPedidoComboActionPerformed
+
+    private void codigoPedidoComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoPedidoComboMouseClicked
+        // TODO add your handling code here:
+        codigoPedidoCombo.removeAllItems();
+        PedidoControl pc = new PedidoControl();
+        List<PedidoModel> pedidos = pc.consultarPedidos();
+        for(PedidoModel p : pedidos){
+            codigoPedidoCombo.addItem(String.valueOf(p.getA02_codigo()));
+        }
+    }//GEN-LAST:event_codigoPedidoComboMouseClicked
+
+    private void codigoProdutoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoProdutoComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_codigoProdutoComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -464,15 +584,17 @@ public class NotaView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton alterarButton;
-    private javax.swing.JButton alterarProdutoButton;
-    private javax.swing.JComboBox<String> codigoclienteCombo;
+    private javax.swing.JButton alterarItemButton;
+    private javax.swing.JMenu clientesMenu;
+    private javax.swing.JComboBox<String> codigoClienteCombo;
+    private javax.swing.JComboBox<String> codigoPedidoCombo;
+    private javax.swing.JComboBox<String> codigoProdutoCombo;
     private javax.swing.JLabel codigoclienteLabel;
     private javax.swing.JLabel codigoitemLabel;
     private javax.swing.JTextField codigoitemText;
-    private javax.swing.JComboBox<String> codigoprodutoCombo;
     private javax.swing.JLabel codigoprodutoLabel;
     private javax.swing.JButton consultarButton;
-    private javax.swing.JButton consultarProdutoButton;
+    private javax.swing.JButton consultarItemButton;
     private javax.swing.JLabel cpfLabel;
     private javax.swing.JTextField cpfText;
     private javax.swing.JLabel dataLabel;
@@ -480,22 +602,19 @@ public class NotaView extends javax.swing.JFrame {
     private javax.swing.JLabel enderecoLabel;
     private javax.swing.JTextField enderecoText;
     private javax.swing.JButton inserirButton;
-    private javax.swing.JButton inserirProdutoButton;
+    private javax.swing.JButton inserirItemButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JComboBox<String> nomeCombo;
-    private javax.swing.JLabel nomeLabel;
-    private javax.swing.JLabel nomeprodutoLabel;
-    private javax.swing.JTextField nomeprodutoText;
     private javax.swing.JLabel notaLabel;
     private javax.swing.JLabel numeroLabel;
     private javax.swing.JTextField numeroText;
+    private javax.swing.JMenu produtoMenu;
     private javax.swing.JLabel quantidadeLabel;
     private javax.swing.JTextField quantidadeText;
     private javax.swing.JButton removerButton;
-    private javax.swing.JButton removerProdutoButton;
+    private javax.swing.JButton removerItemButton;
     private javax.swing.JLabel valoritemLabel;
     private javax.swing.JTextField valoritemText;
-    private javax.swing.JLabel valorunitarioLabel;
-    private javax.swing.JTextField valorunitarioText;
     // End of variables declaration//GEN-END:variables
 }

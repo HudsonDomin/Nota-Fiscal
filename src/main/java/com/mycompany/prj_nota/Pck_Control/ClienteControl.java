@@ -83,7 +83,7 @@ public class ClienteControl {
     public ClienteModel consultarCliente(int iCodigo){
         objClienteModel.setA01_codigo(iCodigo);
         try{
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM CLIENTE_01 WHERE A01_id = ?");
+            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM CLIENTE_01 WHERE A01_codigo = ?");
             stmt.setInt(1, objClienteModel.getA01_codigo());
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){

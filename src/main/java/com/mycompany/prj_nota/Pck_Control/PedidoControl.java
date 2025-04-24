@@ -23,15 +23,20 @@ public class PedidoControl {
     public PedidoControl(){
         objConexaoMySql.getConnection();
     }
+    
+    
 
     //=========== INSERIR PEDIDO ===============================================================================================================================================
     public void inserirPedido(Date dateData, double fValorTotal, int iCodigo) {
         objPedidoModel.setA02_data(dateData);
         objPedidoModel.setA02_valorTotal(fValorTotal);
         objPedidoModel.setA01_codigo(iCodigo);
+        System.out.println("data: " + objPedidoModel.getA02_data());
+        System.out.println("valor total: " + objPedidoModel.getA02_valorTotal());
+        System.out.println("codigo: " + objPedidoModel.getA01_codigo());
         try {
             CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}");
-            stmt.setDate(1, (java.sql.Date) objPedidoModel.getA02_data());
+            stmt.setDate(1, new java.sql.Date(dateData.getTime()));
             stmt.setDouble(2, objPedidoModel.getA02_valorTotal());
             stmt.setInt(3, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
@@ -101,6 +106,7 @@ public class PedidoControl {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 PedidoModel objPedidoModel = new PedidoModel();
+                objPedidoModel.setA02_codigo(rs.getInt("A02_numero"));
                 objPedidoModel.setA02_data(rs.getDate("A02_data"));
                 objPedidoModel.setA02_valorTotal(rs.getFloat("A02_valorTotal"));
                 objPedidoModel.setA01_codigo(rs.getInt("A01_codigo"));
