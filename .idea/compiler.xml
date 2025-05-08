@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Prj_Nota" />
+        <module name="Nota-Fiscal" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Prj_Nota" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
