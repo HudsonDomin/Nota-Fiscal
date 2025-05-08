@@ -4,28 +4,51 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexaoMySql  {
-    private final String sDriver = "com.mysql.cj.jdbc.Driver";
-    private final String sUrl = "jdbc:mysql://localhost:3306/db_nota?useSSL=false";
-    private final String sLogin = "root";
-    private final String sSenha = "";
-    public Connection conn = null;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-    public ConexaoMySql(){}
+public class ConexaoMySql {
+    private Connection conn;
+    private String url;
+    private String user;
+    private String password;
+    private String driver;
 
-    public boolean getConnection(){
-        try{
-            Class.forName(sDriver);
-            conn = DriverManager.getConnection(sUrl, sLogin, sSenha);
-            System.out.println("Conectou");
-            return true;
-        }catch (ClassNotFoundException erro){
-            System.out.println("Driver nao encontrado" + erro.toString());
-            return false;
-        }catch (SQLException erro){
-            System.out.println("Falha ao conectar" + erro.toString());
-            return false;
+    public ConexaoMySql() {
+        Config config = new Config("config.properties");
+        url = config.get("db.url");
+        user = config.get("db.user");
+        password = config.get("db.password");
+        driver = config.get("db.driver");
+
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Driver não encontrado: " + e.toString());
         }
     }
 
+    public Connection getConnection() {
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection(url, user, password);
+                System.out.println("Conectado ao banco");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro na conexão: " + e.toString());
+        }
+        return conn;
+    }
+
+    public void closeConnection() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+                System.out.println("Conexão encerrada");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao fechar conexão: " + e.toString());
+        }
+    }
 }

@@ -2,108 +2,96 @@ package com.mycompany.prj_nota.Pck_Control;
 
 import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.ItemModel;
-
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemControl {
-    ItemModel objItemModel = new ItemModel();
-    ConexaoMySql objConexaoMySql = new ConexaoMySql();
 
-    public ItemControl(){
-        objConexaoMySql.getConnection();
-    }
+    public void inserirItem(int codProduto, int codPedido, int quantidade, double valorItem) {
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
 
-    public void inserirItem(int iProdutoCodigo, int iPedidoCodigo, int iQuantidade, double dValorTotal) {
-        //objItemModel.setA04_codigo(iCodigo);
-        objItemModel.setA03_codigo(iProdutoCodigo);
-        objItemModel.setA02_codigo(iPedidoCodigo);
-        objItemModel.setA04_quantidade(iQuantidade);
-        objItemModel.setA04_valorItem(dValorTotal);
-
-        try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}");
-            stmt.setInt(1, objItemModel.getA03_codigo());
-            stmt.setInt(2, objItemModel.getA02_codigo());
-            stmt.setInt(3, objItemModel.getA04_quantidade());
-            stmt.setDouble(4, objItemModel.getA04_valorItem());
-            stmt.executeQuery();
+            stmt.setInt(1, codProduto);
+            stmt.setInt(2, codPedido);
+            stmt.setInt(3, quantidade);
+            stmt.setDouble(4, valorItem);
+            stmt.execute();
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir: " + e.getMessage());
+            System.out.println("Erro ao inserir item: " + e.getMessage());
         }
     }
 
-    public void removerItem(int iCodigo) {
-        objItemModel.setA04_codigo(iCodigo);
-        try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_Delitem(?)}");
-            stmt.setInt(1, objItemModel.getA04_codigo());
-            stmt.executeQuery();
+    public void atualizarItem(int id, int codProduto, int codPedido, int quantidade, double valorItem) {
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?, ?, ?)}")) {
+
+            stmt.setInt(1, id);
+            stmt.setInt(2, codProduto);
+            stmt.setInt(3, codPedido);
+            stmt.setInt(4, quantidade);
+            stmt.setDouble(5, valorItem);
+            stmt.execute();
         } catch (SQLException e) {
-            System.out.println("Erro ao remover Item: " + e.getMessage());
+            System.out.println("Erro ao atualizar item: " + e.getMessage());
         }
     }
 
-    public void atualizarItem(int iCodigo, int iProdutoCodigo, int iPedidoCodigo, int iQuantidade, double dValorTotal) {
-        objItemModel.setA04_codigo(iCodigo);
-        objItemModel.setA03_codigo(iProdutoCodigo);
-        objItemModel.setA02_codigo(iPedidoCodigo);
-        objItemModel.setA04_quantidade(iQuantidade);
-        objItemModel.setA04_valorItem(dValorTotal);
+    public void deletarItem(int id) {
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_Delitem(?)}")) {
 
-        try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?, ?, ?)}");
-            stmt.setInt(1, objItemModel.getA04_codigo());
-            stmt.setInt(2, objItemModel.getA03_codigo());
-            stmt.setInt(3, objItemModel.getA02_codigo());
-            stmt.setInt(4, objItemModel.getA04_quantidade());
-            stmt.setDouble(5, objItemModel.getA04_valorItem());
-            stmt.executeQuery();
-
+            stmt.setInt(1, id);
+            stmt.execute();
         } catch (SQLException e) {
-            System.out.println("Erro ao atualizar: " + e.getMessage());
+            System.out.println("Erro ao remover item: " + e.getMessage());
         }
     }
 
-    public ItemModel consultarItem(int iCodigo) {
-        objItemModel.setA04_codigo(iCodigo);
-        try {
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_id = ?");
-            stmt.setInt(1, objItemModel.getA04_codigo());
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                objItemModel.setA03_codigo(rs.getInt("A03_codigo"));
-                objItemModel.setA02_codigo(rs.getInt("A02_codigo"));
-                objItemModel.setA04_quantidade(rs.getInt("A04_quantidade"));
-                objItemModel.setA04_valorItem(rs.getDouble("A04_valorItem"));
-                return objItemModel;
+    public ItemModel consultarItem(int id) {
+        ItemModel item = new ItemModel();
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_id = ?")) {
+
+            stmt.setInt(1, id);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    item.setA04_codigo(rs.getInt("A04_id"));
+                    item.setA03_codigo(rs.getInt("A03_codigo"));
+                    item.setA02_codigo(rs.getInt("A02_codigo"));
+                    item.setA04_quantidade(rs.getInt("A04_quantidade"));
+                    item.setA04_valorItem(rs.getDouble("A04_valorItem"));
+                    return item;
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao consultar" + e.getMessage());
+            System.out.println("Erro ao consultar item: " + e.getMessage());
         }
         return null;
     }
 
-    public List<ItemModel> consultarItem() {
+    public List<ItemModel> consultarItens() {
         List<ItemModel> itens = new ArrayList<>();
-        try {
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM ITEM_04");
-            ResultSet rs = stmt.executeQuery();
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04");
+             var rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                ItemModel objItemModel = new ItemModel();
-                objItemModel.setA03_codigo(rs.getInt("A03_codigo"));
-                objItemModel.setA02_codigo(rs.getInt("A02_codigo"));
-                objItemModel.setA04_quantidade(rs.getInt("A04_quantidade"));
-                objItemModel.setA04_valorItem(rs.getDouble("A04_valorItem"));
-                itens.add(objItemModel);
+                ItemModel item = new ItemModel();
+                item.setA04_codigo(rs.getInt("A04_id"));
+                item.setA03_codigo(rs.getInt("A03_codigo"));
+                item.setA02_codigo(rs.getInt("A02_codigo"));
+                item.setA04_quantidade(rs.getInt("A04_quantidade"));
+                item.setA04_valorItem(rs.getDouble("A04_valorItem"));
+                itens.add(item);
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao consultar: " + e.getMessage());
+            System.out.println("Erro ao consultar itens: " + e.getMessage());
         }
         return itens;
     }

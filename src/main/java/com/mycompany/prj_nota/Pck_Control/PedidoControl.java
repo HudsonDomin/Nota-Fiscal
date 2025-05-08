@@ -1,11 +1,7 @@
-
-
 package com.mycompany.prj_nota.Pck_Control;
 
 import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.PedidoModel;
-
-
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,106 +12,98 @@ import java.util.List;
 
 public class PedidoControl {
 
-    /*int a01_codigo; String a01_nome; String a01_endereco; String a01_cpf; double a01_credito;*/
-    PedidoModel objPedidoModel = new PedidoModel();
-    ConexaoMySql objConexaoMySql = new ConexaoMySql();
-
-    public PedidoControl(){
-        objConexaoMySql.getConnection();
-    }
-    
-    
-
-    //=========== INSERIR PEDIDO ===============================================================================================================================================
     public void inserirPedido(Date dateData, double fValorTotal, int iCodigo) {
-        objPedidoModel.setA02_data(dateData);
-        objPedidoModel.setA02_valorTotal(fValorTotal);
-        objPedidoModel.setA01_codigo(iCodigo);
-        System.out.println("data: " + objPedidoModel.getA02_data());
-        System.out.println("valor total: " + objPedidoModel.getA02_valorTotal());
-        System.out.println("codigo: " + objPedidoModel.getA01_codigo());
-        try {
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}");
-            stmt.setDate(1, new java.sql.Date(dateData.getTime()));
-            stmt.setDouble(2, objPedidoModel.getA02_valorTotal());
-            stmt.setInt(3, objPedidoModel.getA01_codigo());
+        PedidoModel pedido = new PedidoModel();
+        pedido.setA02_data(dateData);
+        pedido.setA02_valorTotal(fValorTotal);
+        pedido.setA01_codigo(iCodigo);
+
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}")) {
+
+            stmt.setDate(1, new java.sql.Date(pedido.getA02_data().getTime()));
+            stmt.setDouble(2, pedido.getA02_valorTotal());
+            stmt.setInt(3, pedido.getA01_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
         }
     }
-    //============= REMOVER PEDIDO =======================================================
-    public void removerPedido(int iNumero){
-        objPedidoModel.setA01_codigo(iNumero);
-        try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_DelPedido(?)}");
-            stmt.setInt(1, objPedidoModel.getA02_codigo());
+
+    public void removerPedido(int iNumero) {
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_DelPedido(?)}")) {
+
+            stmt.setInt(1, iNumero);
             stmt.executeQuery();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao remover pedido: " + e.getMessage());
         }
     }
 
-    //============== ATUALIZAR PEDIDO =====================================================
-    public void atualizarPedido(int iNumero, Date dateData, double dValorTotal, int iCodigo){
+    public void atualizarPedido(int iNumero, Date dateData, double dValorTotal, int iCodigo) {
+        PedidoModel pedido = new PedidoModel();
+        pedido.setA02_codigo(iNumero);
+        pedido.setA02_data(dateData);
+        pedido.setA02_valorTotal(dValorTotal);
+        pedido.setA01_codigo(iCodigo);
 
-        objPedidoModel.setA02_codigo(iNumero);
-        objPedidoModel.setA02_data(dateData);
-        objPedidoModel.setA02_valorTotal(dValorTotal);
-        objPedidoModel.setA01_codigo(iCodigo);
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdPedido(?, ?, ?, ?)}")) {
 
-
-        try{
-            CallableStatement stmt = objConexaoMySql.conn.prepareCall("{CALL Proc_UpdPedido(?, ?, ?, ?)}");
-            stmt.setInt(1, objPedidoModel.getA02_codigo());
-            stmt.setDate(2, (java.sql.Date) objPedidoModel.getA02_data());
-            stmt.setDouble(3, objPedidoModel.getA02_valorTotal());
-            stmt.setInt(4, objPedidoModel.getA01_codigo());
+            stmt.setInt(1, pedido.getA02_codigo());
+            stmt.setDate(2, new java.sql.Date(pedido.getA02_data().getTime()));
+            stmt.setDouble(3, pedido.getA02_valorTotal());
+            stmt.setInt(4, pedido.getA01_codigo());
             stmt.executeQuery();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao atualizar pedido: " + e.getMessage());
         }
     }
 
-    //=========== CONSULTA DO PEDIDO ===================================================
-    public PedidoModel consultarPedido(int iNumero){
-        objPedidoModel.setA02_codigo(iNumero);
-        try{
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM PEDIDO_02 WHERE A02_numero = ?");
-            stmt.setInt(1, objPedidoModel.getA02_codigo());
-            ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
+    public PedidoModel consultarPedido(int iNumero) {
+        PedidoModel pedido = new PedidoModel();
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02 WHERE A02_numero = ?")) {
 
-
-                objPedidoModel.setA02_data(rs.getDate("A02_data"));
-                objPedidoModel.setA02_valorTotal(rs.getFloat("A02_valorTotal"));
-                objPedidoModel.setA01_codigo(rs.getInt("A01_codigo"));
-
-                return objPedidoModel;
+            stmt.setInt(1, iNumero);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    pedido.setA02_codigo(rs.getInt("A02_numero"));
+                    pedido.setA02_data(rs.getDate("A02_data"));
+                    pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
+                    pedido.setA01_codigo(rs.getInt("A01_codigo"));
+                    return pedido;
+                }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao consultar pedido: " + e.getMessage());
         }
         return null;
     }
 
-    public List<PedidoModel> consultarPedidos(){
+    public List<PedidoModel> consultarPedidos() {
         List<PedidoModel> pedidos = new ArrayList<>();
-        try{
-            PreparedStatement stmt = objConexaoMySql.conn.prepareStatement("SELECT * FROM PEDIDO_02");
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                PedidoModel objPedidoModel = new PedidoModel();
-                objPedidoModel.setA02_codigo(rs.getInt("A02_numero"));
-                objPedidoModel.setA02_data(rs.getDate("A02_data"));
-                objPedidoModel.setA02_valorTotal(rs.getFloat("A02_valorTotal"));
-                objPedidoModel.setA01_codigo(rs.getInt("A01_codigo"));
-                pedidos.add(objPedidoModel);
+        ConexaoMySql conexao = new ConexaoMySql();
+        try (var conn = conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02");
+             var rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                PedidoModel pedido = new PedidoModel();
+                pedido.setA02_codigo(rs.getInt("A02_numero"));
+                pedido.setA02_data(rs.getDate("A02_data"));
+                pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
+                pedido.setA01_codigo(rs.getInt("A01_codigo"));
+                pedidos.add(pedido);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao consultar pedidos: " + e.getMessage());
         }
-
         return pedidos;
     }
 }
