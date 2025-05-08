@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Nota-Fiscal-main.iml" filepath="$PROJECT_DIR$/.idea/Nota-Fiscal-main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Nota-Fiscal-main/Prj_Nota.iml" filepath="$PROJECT_DIR$/Nota-Fiscal-main/Prj_Nota.iml" />
     </modules>
   </component>
 </project>

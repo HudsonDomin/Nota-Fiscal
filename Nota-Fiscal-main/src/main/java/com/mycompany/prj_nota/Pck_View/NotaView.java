@@ -412,11 +412,11 @@ public class NotaView extends javax.swing.JFrame {
         //nomeCombo.getText();
         //cpfText.getText();
         //enderecoText.getText();
-        PedidoControl pc = new PedidoControl();
+        PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
         try{
             Date dataPedido = new Date();
-            pc.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
+            objPedidoControl.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
 
         }catch(NumberFormatException e){
             System.out.println(e.toString());
@@ -425,21 +425,21 @@ public class NotaView extends javax.swing.JFrame {
 
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
         // TODO add your handling code here:
-        PedidoControl pc = new PedidoControl();
-        pc.removerPedido(Integer.parseInt(numeroText.getText()));
+        PedidoControl objPedidoControl = new PedidoControl();
+        objPedidoControl.removerPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_removerButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
         // TODO add your handling code here:
-        PedidoControl pc = new PedidoControl();
-        pc.consultarPedido(Integer.parseInt(numeroText.getText()));
+        PedidoControl objPedidoControl = new PedidoControl();
+        objPedidoControl.consultarPedido(Integer.parseInt(numeroText.getText()));
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void inserirItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl ic = new ItemControl();
+        ItemControl objItemControl = new ItemControl();
         String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
-        ic.inserirItem(Integer.parseInt(produtoSelecionado),
+        objItemControl.inserirItem(Integer.parseInt(produtoSelecionado),
                         Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
                         Integer.parseInt(quantidadeText.getText()),
                         Integer.parseInt(valoritemText.getText()));
@@ -448,14 +448,14 @@ public class NotaView extends javax.swing.JFrame {
 
     private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl ic = new ItemControl();
-        ic.deletarItem(Integer.parseInt(codigoitemText.getText()));
+        ItemControl objItemControl = new ItemControl();
+        objItemControl.deletarItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_removerItemButtonActionPerformed
 
     private void consultarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl ic = new ItemControl();
-        ic.consultarItem(Integer.parseInt(codigoitemText.getText()));
+        ItemControl objItemControl = new ItemControl();
+        objItemControl.consultarItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_consultarItemButtonActionPerformed
 
     private void codigoitemTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoitemTextActionPerformed
@@ -464,23 +464,22 @@ public class NotaView extends javax.swing.JFrame {
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
-        PedidoControl pc = new PedidoControl();
+        PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try{
             Date dataPedido = format.parse(dataText.getText());
-            pc.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
-
-
-        }catch(Exception ex){
+            objPedidoControl.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+        }catch(ParseException e){
+            System.out.println("Erro ao formatar: " + e.getMessage());
         }  
     }//GEN-LAST:event_alterarButtonActionPerformed
 
     private void alterarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl ic = new ItemControl();
+        ItemControl objItemControl = new ItemControl();
         String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
-        ic.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
+        objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
                         Integer.parseInt(numeroText.getText()),
                         Integer.parseInt(quantidadeText.getText()),
                         Integer.parseInt(valoritemText.getText()));
@@ -488,15 +487,15 @@ public class NotaView extends javax.swing.JFrame {
 
     private void clientesMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientesMenuMouseClicked
         // TODO add your handling code here:
-        ClienteView cv = new ClienteView();
-        cv.setVisible(true);
+        ClienteView objClienteView = new ClienteView();
+        objClienteView.setVisible(true);
         dispose();
     }//GEN-LAST:event_clientesMenuMouseClicked
 
     private void produtoMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produtoMenuMouseClicked
         // TODO add your handling code here:
-        ProdutoView pv = new ProdutoView();
-        pv.setVisible(true);
+        ProdutoView objProdutoView = new ProdutoView();
+        objProdutoView.setVisible(true);
         dispose();
     }//GEN-LAST:event_produtoMenuMouseClicked
 
@@ -515,8 +514,8 @@ public class NotaView extends javax.swing.JFrame {
     try {
         Integer codigoClienteSelecionado = Integer.parseInt(clienteSelecionado);
         
-        ClienteControl cc = new ClienteControl();
-        ClienteModel cliente = cc.consultarCliente(codigoClienteSelecionado);
+        ClienteControl objClienteControl = new ClienteControl();
+        ClienteModel cliente = objClienteControl.consultarCliente(codigoClienteSelecionado);
         
         cpfText.setText(cliente.getA01_cpf());
         enderecoText.setText(cliente.getA01_endereco());

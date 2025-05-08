@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ProdutoView extends javax.swing.JFrame {
     // obj da classe ProdutoControl
-    ProdutoControl oProdutoControl = new ProdutoControl(); 
+    ProdutoControl objProdutoControl = new ProdutoControl();
     /**
      * Creates new form ProdutoView
      */
@@ -244,13 +244,13 @@ public class ProdutoView extends javax.swing.JFrame {
 
     private void notaMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notaMenuMouseClicked
         // TODO add your handling code here:
-        NotaView nv = new NotaView();
-        nv.setVisible(true);
+        NotaView objNotaView = new NotaView();
+        objNotaView.setVisible(true);
         dispose();
     }//GEN-LAST:event_notaMenuMouseClicked
 
     private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
-        oProdutoControl.inserirProduto(
+        objProdutoControl.inserirProduto(
             /*Interger.parseInt(idText.getText())),*/
             descricaoText.getText(), // String a03_descricao -> sDescricao
             Double.parseDouble(valorUnitText.getText()), // Double a03_valorUnitario -> dValorUnitario
@@ -260,14 +260,14 @@ public class ProdutoView extends javax.swing.JFrame {
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void excluirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirButtonActionPerformed
-        oProdutoControl.deletarProduto(
+        objProdutoControl.deletarProduto(
                 Integer.parseInt(idText.getText())
         );
         atualizarTabelaProdutos();
     }//GEN-LAST:event_excluirButtonActionPerformed
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
-        oProdutoControl.atualizarProduto(
+        objProdutoControl.atualizarProduto(
             Integer.parseInt(idText.getText()),
             descricaoText.getText(),
             Double.parseDouble(valorUnitText.getText()),
@@ -280,7 +280,7 @@ public class ProdutoView extends javax.swing.JFrame {
         atualizarTabelaProdutos();
     }//GEN-LAST:event_consultarButtonActionPerformed
     private void atualizarTabelaProdutos() {
-        List<ProdutoModel> produtos = oProdutoControl.consultarProdutos();
+        List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
         for (ProdutoModel p : produtos) {
