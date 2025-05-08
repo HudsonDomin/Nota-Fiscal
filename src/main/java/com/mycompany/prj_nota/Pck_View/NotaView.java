@@ -25,7 +25,23 @@ public class NotaView extends javax.swing.JFrame {
      * Creates new form notaView
      */
     public NotaView() {
+
         initComponents();
+        ClienteControl objClienteControl = new ClienteControl();
+        ProdutoControl objProdutoControl = new ProdutoControl();
+        PedidoControl objPedidoControl = new PedidoControl();
+        List<ClienteModel> clientes = objClienteControl.consultarClientes();
+        List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
+        List<PedidoModel> pedidos = objPedidoControl.consultarPedidos();
+        for (ClienteModel cliente : clientes){
+            codigoClienteCombo.addItem(String.valueOf(cliente.getA01_codigo()));
+        }
+        for (ProdutoModel produto : produtos){
+            codigoProdutoCombo.addItem(String.valueOf(produto.getA03_codigo()));
+        }
+        for (PedidoModel pedido : pedidos){
+            codigoPedidoCombo.addItem(String.valueOf(pedido.getA02_codigo()));
+        }
     }
 
     /**
@@ -486,24 +502,10 @@ public class NotaView extends javax.swing.JFrame {
 
     private void codigoClienteComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoClienteComboMouseClicked
         // TODO add your handling code here:
-        ClienteControl cc = new ClienteControl();
-        List<ClienteModel> clientes = cc.consultarClientes();
-        codigoClienteCombo.removeAllItems();
-        for(ClienteModel c : clientes ){
-            codigoClienteCombo.addItem(String.valueOf(c.getA01_codigo()));
-        }
     }//GEN-LAST:event_codigoClienteComboMouseClicked
 
     private void codigoProdutoComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoProdutoComboMouseClicked
         // TODO add your handling code here:
-        ProdutoControl pc = new ProdutoControl();
-        List<ProdutoModel> produtos = pc.consultarProdutos();
-        if(produtos.isEmpty()){
-            codigoProdutoCombo.addItem("0");
-        }
-        for(ProdutoModel p : produtos){
-            codigoProdutoCombo.addItem(String.valueOf(p.getA03_codigo()));
-        }
     }//GEN-LAST:event_codigoProdutoComboMouseClicked
 
     private void codigoClienteComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoClienteComboActionPerformed
@@ -535,12 +537,6 @@ public class NotaView extends javax.swing.JFrame {
 
     private void codigoPedidoComboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_codigoPedidoComboMouseClicked
         // TODO add your handling code here:
-        codigoPedidoCombo.removeAllItems();
-        PedidoControl pc = new PedidoControl();
-        List<PedidoModel> pedidos = pc.consultarPedidos();
-        for(PedidoModel p : pedidos){
-            codigoPedidoCombo.addItem(String.valueOf(p.getA02_codigo()));
-        }
     }//GEN-LAST:event_codigoPedidoComboMouseClicked
 
     private void codigoProdutoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoProdutoComboActionPerformed

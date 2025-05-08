@@ -72,15 +72,15 @@ public class ProdutoControl {
         ProdutoModel produto = new ProdutoModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (Connection conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PRODUTO_02 WHERE A02_codigo = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Produto_03 WHERE A03_codigo = ?")) {
 
             stmt.setInt(1, iCodigo);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    produto.setA03_codigo(rs.getInt("A02_codigo"));
-                    produto.setA03_descricao(rs.getString("A02_descricao"));
-                    produto.setA03_valorUnitario(rs.getDouble("A02_valor"));
-                    produto.setA03_estoque(rs.getInt("A02_estoque"));
+                    produto.setA03_codigo(rs.getInt("A03_codigo"));
+                    produto.setA03_descricao(rs.getString("A03_descricao"));
+                    produto.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
+                    produto.setA03_estoque(rs.getInt("A03_estoque"));
                     return produto;
                 }
             }
@@ -95,15 +95,15 @@ public class ProdutoControl {
         List<ProdutoModel> produtos = new ArrayList<>();
         ConexaoMySql conexao = new ConexaoMySql();
         try (Connection conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PRODUTO_02");
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Produto_03");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 ProdutoModel produto = new ProdutoModel();
-                produto.setA03_codigo(rs.getInt("A02_codigo"));
-                produto.setA03_descricao(rs.getString("A02_descricao"));
-                produto.setA03_valorUnitario(rs.getDouble("A02_valor"));
-                produto.setA03_estoque(rs.getInt("A02_estoque"));
+                produto.setA03_codigo(rs.getInt("A03_codigo"));
+                produto.setA03_descricao(rs.getString("A03_descricao"));
+                produto.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
+                produto.setA03_estoque(rs.getInt("A03_estoque"));
                 produtos.add(produto);
             }
 
