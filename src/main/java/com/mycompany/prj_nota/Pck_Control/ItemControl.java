@@ -2,37 +2,71 @@ package com.mycompany.prj_nota.Pck_Control;
 
 import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.ItemModel;
+import com.mycompany.prj_nota.Pck_Model.ProdutoModel;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemControl {
 
-    public void inserirItem(int codProduto, int codPedido, int quantidade, double valorItem) {
+    public void inserirItem(int iCodProduto, int iCodPedido, int iQuantidade, double dValorItem) {
         ConexaoMySql conexao = new ConexaoMySql();
-        try (var conn = conexao.getConnection();
-             CallableStatement stmt = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
+        try (var conn = conexao.getConnection()) {
+            conn.setAutoCommit(false);
 
-            stmt.setInt(1, codProduto);
-            stmt.setInt(2, codPedido);
-            stmt.setInt(3, quantidade);
-            stmt.setDouble(4, valorItem);
-            stmt.execute();
+            try (CallableStatement stmt1 = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
+                stmt1.setInt(1, iCodProduto);
+                stmt1.setInt(2, iCodPedido);
+                stmt1.setInt(3, iQuantidade);
+                stmt1.setDouble(4, dValorItem);
+                stmt1.execute();
+            }
+
+            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdValorTotal(?)}")) {
+                stmt2.setInt(1, iCodPedido);
+                stmt2.execute();
+            }
+
+            try(CallableStatement stmt3 = conn.prepareCall("{CALL Proc_UpdProduto(?, ?, ?, ?)}")){
+                ProdutoControl objProdutoControl = new ProdutoControl();
+                ProdutoModel objProdutoModel = objProdutoControl.consultarProduto(iCodProduto);
+                int quantidadeRestante = objProdutoModel.getA03_estoque() - iQuantidade;
+                if(quantidadeRestante < 0){
+                    throw new IllegalArgumentException("Sem estoque o suficiente");
+                }
+                stmt3.setInt(1, objProdutoModel.getA03_codigo());
+                stmt3.setString(2, objProdutoModel.getA03_descricao());
+                stmt3.setDouble(3, objProdutoModel.getA03_valorUnitario());
+                stmt3.setInt(4, objProdutoModel.getA03_estoque() - iQuantidade);
+                stmt3.execute();
+            }
+
+            conn.commit();
+
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir item: " + e.getMessage());
+            try {
+                System.out.println("Erro, desfazendo transação: " + e.getMessage());
+                conexao.getConnection().rollback();
+            } catch (SQLException rollbackEx) {
+                System.out.println("Erro ao fazer rollback: " + rollbackEx.getMessage());
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println("Erro ao criar item: " + e.getMessage());
         }
     }
 
-    public void atualizarItem(int id, int codProduto, int codPedido, int quantidade, double valorItem) {
+
+    public void atualizarItem(int iCodItem, int iCodProduto, int iCodPedido, int iQuantidade, double dValorItem) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?, ?, ?)}")) {
 
-            stmt.setInt(1, id);
-            stmt.setInt(2, codProduto);
-            stmt.setInt(3, codPedido);
-            stmt.setInt(4, quantidade);
-            stmt.setDouble(5, valorItem);
+            stmt.setInt(1, iCodItem);
+            stmt.setInt(2, iCodProduto);
+            stmt.setInt(3, iCodPedido);
+            stmt.setInt(4, iQuantidade);
+            stmt.setDouble(5, dValorItem);
             stmt.execute();
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar item: " + e.getMessage());
@@ -51,13 +85,13 @@ public class ItemControl {
         }
     }
 
-    public ItemModel consultarItem(int id) {
+    public ItemModel consultarItem(int iCodItem) {
         ItemModel item = new ItemModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_id = ?")) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, iCodItem);
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     item.setA04_codigo(rs.getInt("A04_id"));

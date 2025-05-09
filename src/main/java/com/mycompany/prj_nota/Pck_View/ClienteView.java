@@ -258,22 +258,22 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl cc = new ClienteControl();
-        cc.inserirCliente(nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Float.parseFloat(creditoText.getText()));
+        ClienteControl objClienteControl = new ClienteControl();
+        objClienteControl.inserirCliente(nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Float.parseFloat(creditoText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void produtoMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produtoMenuMouseClicked
         // TODO add your handling code here:
-        ProdutoView pv = new ProdutoView();
-        pv.setVisible(true);
+        ProdutoView objProdutoView = new ProdutoView();
+        objProdutoView.setVisible(true);
         dispose();
     }//GEN-LAST:event_produtoMenuMouseClicked
 
     private void excluirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl cc = new ClienteControl();
-        cc.removerCliente(Integer.parseInt(idText.getText()));
+        ClienteControl objClienteControl = new ClienteControl();
+        objClienteControl.removerCliente(Integer.parseInt(idText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_excluirButtonActionPerformed
 
@@ -283,8 +283,8 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl cc = new ClienteControl();
-        cc.atualizarCliente(Integer.parseInt(idText.getText()), nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Double.parseDouble(creditoText.getText()));
+        ClienteControl objClienteControl = new ClienteControl();
+        objClienteControl.atualizarCliente(Integer.parseInt(idText.getText()), nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Double.parseDouble(creditoText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_alterarButtonActionPerformed
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
@@ -292,8 +292,8 @@ public class ClienteView extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void atualizarTabelaClientes() {
-        ClienteControl cc = new ClienteControl();
-        List<ClienteModel> clientes = cc.consultarClientes();
+        ClienteControl objClienteControl = new ClienteControl();
+        List<ClienteModel> clientes = objClienteControl.consultarClientes();
 
         DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();
         model.setRowCount(0);
@@ -312,8 +312,8 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void notaMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notaMenuMouseClicked
         // TODO add your handling code here:
-        NotaView nv = new NotaView();
-        nv.setVisible(true);
+        NotaView objNotaView = new NotaView();
+        objNotaView.setVisible(true);
         dispose();
     }//GEN-LAST:event_notaMenuMouseClicked
 

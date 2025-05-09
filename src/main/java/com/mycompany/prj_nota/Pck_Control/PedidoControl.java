@@ -12,9 +12,9 @@ import java.util.List;
 
 public class PedidoControl {
 
-    public void inserirPedido(Date dateData, double fValorTotal, int iCodigo) {
+    public void inserirPedido(Date dDateData, double fValorTotal, int iCodigo) {
         PedidoModel pedido = new PedidoModel();
-        pedido.setA02_data(dateData);
+        pedido.setA02_data(dDateData);
         pedido.setA02_valorTotal(fValorTotal);
         pedido.setA01_codigo(iCodigo);
 
@@ -43,10 +43,10 @@ public class PedidoControl {
         }
     }
 
-    public void atualizarPedido(int iNumero, Date dateData, double dValorTotal, int iCodigo) {
+    public void atualizarPedido(int iNumero, Date dDateData, double dValorTotal, int iCodigo) {
         PedidoModel pedido = new PedidoModel();
         pedido.setA02_codigo(iNumero);
-        pedido.setA02_data(dateData);
+        pedido.setA02_data(dDateData);
         pedido.setA02_valorTotal(dValorTotal);
         pedido.setA01_codigo(iCodigo);
 
