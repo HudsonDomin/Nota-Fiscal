@@ -16,12 +16,14 @@ import java.util.List;
  */
 public class ProdutoView extends javax.swing.JFrame {
     // obj da classe ProdutoControl
-    ProdutoControl objProdutoControl = new ProdutoControl();
+    private final ProdutoControl objProdutoControl;
     /**
      * Creates new form ProdutoView
      */
     public ProdutoView() {
+
         initComponents();
+        objProdutoControl = new ProdutoControl();
     }
 
     /**
@@ -281,10 +283,10 @@ public class ProdutoView extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
     private void atualizarTabelaProdutos() {
         List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        model.setRowCount(0);
+        DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
+        tableModel.setRowCount(0);
         for (ProdutoModel p : produtos) {
-            model.addRow(new Object[]{
+            tableModel.addRow(new Object[]{
                     p.getA03_codigo(),
                     p.getA03_descricao(),
                     p.getA03_valorUnitario(),

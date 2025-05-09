@@ -19,8 +19,11 @@ public class ClienteView extends javax.swing.JFrame {
     /**
      * Creates new form ClienteView
      */
+    private final ClienteControl objClienteControl;
     public ClienteView() {
+
         initComponents();
+        objClienteControl = new ClienteControl();
     }
 
     /**
@@ -258,7 +261,6 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl objClienteControl = new ClienteControl();
         objClienteControl.inserirCliente(nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Float.parseFloat(creditoText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_inserirButtonActionPerformed
@@ -272,7 +274,6 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void excluirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl objClienteControl = new ClienteControl();
         objClienteControl.removerCliente(Integer.parseInt(idText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_excluirButtonActionPerformed
@@ -283,7 +284,6 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
-        ClienteControl objClienteControl = new ClienteControl();
         objClienteControl.atualizarCliente(Integer.parseInt(idText.getText()), nomeText.getText(), enderecoText.getText(), telefoneText.getText(), cpfText.getText(), Double.parseDouble(creditoText.getText()));
         atualizarTabelaClientes();
     }//GEN-LAST:event_alterarButtonActionPerformed
@@ -292,7 +292,6 @@ public class ClienteView extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void atualizarTabelaClientes() {
-        ClienteControl objClienteControl = new ClienteControl();
         List<ClienteModel> clientes = objClienteControl.consultarClientes();
 
         DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();

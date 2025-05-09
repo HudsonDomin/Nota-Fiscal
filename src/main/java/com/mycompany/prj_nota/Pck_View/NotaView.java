@@ -24,12 +24,19 @@ public class NotaView extends javax.swing.JFrame {
     /**
      * Creates new form notaView
      */
+    private final ClienteControl objClienteControl;
+    private final ProdutoControl objProdutoControl;
+    private final PedidoControl objPedidoControl;
+    private final ItemControl objItemControl;
+
     public NotaView() {
 
         initComponents();
-        ClienteControl objClienteControl = new ClienteControl();
-        ProdutoControl objProdutoControl = new ProdutoControl();
-        PedidoControl objPedidoControl = new PedidoControl();
+        objClienteControl = new ClienteControl();
+        objProdutoControl = new ProdutoControl();
+        objPedidoControl = new PedidoControl();
+        objItemControl = new ItemControl();
+
         List<ClienteModel> clientes = objClienteControl.consultarClientes();
         List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
         List<PedidoModel> pedidos = objPedidoControl.consultarPedidos();
@@ -437,24 +444,27 @@ public class NotaView extends javax.swing.JFrame {
 
     private void inserirItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl objItemControl = new ItemControl();
-        String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
-        objItemControl.inserirItem(Integer.parseInt(produtoSelecionado),
-                        Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
-                        Integer.parseInt(quantidadeText.getText()),
-                        Integer.parseInt(valoritemText.getText()));
+        int codProduto = Integer.parseInt(codigoProdutoCombo.getSelectedItem().toString());
+        double valor = objProdutoControl.consultarProduto(codProduto)
+                .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
+        objItemControl.inserirItem(
+                codProduto,
+                Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
+                Integer.parseInt(quantidadeText.getText()),
+                valor
+        );
+
+        valoritemText.setText(String.valueOf(valor));
         
     }//GEN-LAST:event_inserirItemButtonActionPerformed
 
     private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl objItemControl = new ItemControl();
         objItemControl.deletarItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_removerItemButtonActionPerformed
 
     private void consultarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl objItemControl = new ItemControl();
         objItemControl.consultarItem(Integer.parseInt(codigoitemText.getText()));
     }//GEN-LAST:event_consultarItemButtonActionPerformed
 
@@ -464,7 +474,6 @@ public class NotaView extends javax.swing.JFrame {
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
-        PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         try{
@@ -477,7 +486,6 @@ public class NotaView extends javax.swing.JFrame {
 
     private void alterarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarItemButtonActionPerformed
         // TODO add your handling code here:
-        ItemControl objItemControl = new ItemControl();
         String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
         objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
                         Integer.parseInt(numeroText.getText()),
@@ -514,11 +522,10 @@ public class NotaView extends javax.swing.JFrame {
     try {
         Integer codigoClienteSelecionado = Integer.parseInt(clienteSelecionado);
         
-        ClienteControl objClienteControl = new ClienteControl();
-        ClienteModel cliente = objClienteControl.consultarCliente(codigoClienteSelecionado);
+        ClienteModel objClienteModel = objClienteControl.consultarCliente(codigoClienteSelecionado);
         
-        cpfText.setText(cliente.getA01_cpf());
-        enderecoText.setText(cliente.getA01_endereco());
+        cpfText.setText(objClienteModel.getA01_cpf());
+        enderecoText.setText(objClienteModel.getA01_endereco());
         
         Date dataAtual = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
