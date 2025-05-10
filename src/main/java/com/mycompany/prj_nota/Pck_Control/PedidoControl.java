@@ -12,9 +12,9 @@ import java.util.List;
 
 public class PedidoControl {
 
-    public void inserirPedido(Date dDateData, double fValorTotal, int iCodigo) {
+    public void inserirPedido(Date dData, double fValorTotal, int iCodigo) {
         PedidoModel pedido = new PedidoModel();
-        pedido.setA02_data(dDateData);
+        pedido.setA02_data(dData);
         pedido.setA02_valorTotal(fValorTotal);
         pedido.setA01_codigo(iCodigo);
 
@@ -43,10 +43,10 @@ public class PedidoControl {
         }
     }
 
-    public void atualizarPedido(int iNumero, Date dDateData, double dValorTotal, int iCodigo) {
+    public void atualizarPedido(int iNumero, Date dData, double dValorTotal, int iCodigo) {
         PedidoModel pedido = new PedidoModel();
         pedido.setA02_codigo(iNumero);
-        pedido.setA02_data(dDateData);
+        pedido.setA02_data(dData);
         pedido.setA02_valorTotal(dValorTotal);
         pedido.setA01_codigo(iCodigo);
 
@@ -68,12 +68,12 @@ public class PedidoControl {
         PedidoModel pedido = new PedidoModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02 WHERE A02_numero = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02 WHERE A02_codigo = ?")) {
 
             stmt.setInt(1, iNumero);
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    pedido.setA02_codigo(rs.getInt("A02_numero"));
+                    pedido.setA02_codigo(rs.getInt("A02_codigo"));
                     pedido.setA02_data(rs.getDate("A02_data"));
                     pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
                     pedido.setA01_codigo(rs.getInt("A01_codigo"));
@@ -95,7 +95,7 @@ public class PedidoControl {
 
             while (rs.next()) {
                 PedidoModel pedido = new PedidoModel();
-                pedido.setA02_codigo(rs.getInt("A02_numero"));
+                pedido.setA02_codigo(rs.getInt("A02_codigo"));
                 pedido.setA02_data(rs.getDate("A02_data"));
                 pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
                 pedido.setA01_codigo(rs.getInt("A01_codigo"));

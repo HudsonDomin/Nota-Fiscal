@@ -72,7 +72,7 @@ public class ProdutoControl {
         ProdutoModel produto = new ProdutoModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (Connection conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Produto_03 WHERE A03_codigo = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PRODUTO_03 WHERE A03_codigo = ?")) {
 
             stmt.setInt(1, iCodigo);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -95,7 +95,7 @@ public class ProdutoControl {
         List<ProdutoModel> produtos = new ArrayList<>();
         ConexaoMySql conexao = new ConexaoMySql();
         try (Connection conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Produto_03");
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PRODUTO_03");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {

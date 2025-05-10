@@ -8,7 +8,7 @@ public class Config {
     private Properties properties = new Properties();
 
     public Config(String fileName) {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
+        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
             if (input == null) {
                 throw new IOException("Arquivo " + fileName + " não encontrado no classpath.");
             }

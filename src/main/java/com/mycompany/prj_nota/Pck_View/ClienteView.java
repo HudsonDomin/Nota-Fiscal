@@ -292,19 +292,19 @@ public class ClienteView extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void atualizarTabelaClientes() {
-        List<ClienteModel> clientes = objClienteControl.consultarClientes();
+        List<ClienteModel> listaClienteModel = objClienteControl.consultarClientes();
 
         DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();
         model.setRowCount(0);
 
-        for (ClienteModel c : clientes) {
+        for (ClienteModel objClienteModel : listaClienteModel) {
             model.addRow(new Object[]{
-                    c.getA01_codigo(),
-                    c.getA01_nome(),
-                    c.getA01_endereco(),
-                    c.getA01_telefone(),
-                    c.getA01_cpf(),
-                    c.getA01_credito()
+                    objClienteModel.getA01_codigo(),
+                    objClienteModel.getA01_nome(),
+                    objClienteModel.getA01_endereco(),
+                    objClienteModel.getA01_telefone(),
+                    objClienteModel.getA01_cpf(),
+                    objClienteModel.getA01_credito()
             });
         }
     }

@@ -73,12 +73,12 @@ public class ItemControl {
         }
     }
 
-    public void deletarItem(int id) {
+    public void deletarItem(int iCodItem) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_Delitem(?)}")) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, iCodItem);
             stmt.execute();
         } catch (SQLException e) {
             System.out.println("Erro ao remover item: " + e.getMessage());
@@ -89,12 +89,12 @@ public class ItemControl {
         ItemModel item = new ItemModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_codigo = ?")) {
 
             stmt.setInt(1, iCodItem);
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    item.setA04_codigo(rs.getInt("A04_id"));
+                    item.setA04_codigo(rs.getInt("A04_codigo"));
                     item.setA03_codigo(rs.getInt("A03_codigo"));
                     item.setA02_codigo(rs.getInt("A02_codigo"));
                     item.setA04_quantidade(rs.getInt("A04_quantidade"));
@@ -117,7 +117,7 @@ public class ItemControl {
 
             while (rs.next()) {
                 ItemModel item = new ItemModel();
-                item.setA04_codigo(rs.getInt("A04_id"));
+                item.setA04_codigo(rs.getInt("A04_codigo"));
                 item.setA03_codigo(rs.getInt("A03_codigo"));
                 item.setA02_codigo(rs.getInt("A02_codigo"));
                 item.setA04_quantidade(rs.getInt("A04_quantidade"));
