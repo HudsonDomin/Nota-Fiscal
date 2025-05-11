@@ -420,10 +420,11 @@ public class NotaView extends javax.swing.JFrame {
         try{
             Date dataPedido = new Date();
             objPedidoControl.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
-
+            JOptionPane.showMessageDialog(null, "Pedido inserido!");
         }catch(NumberFormatException e){
-            System.out.println(e.toString());
-        }        
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_inserirButtonActionPerformed
 
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
@@ -472,9 +473,8 @@ public class NotaView extends javax.swing.JFrame {
                 Integer.parseInt(quantidadeText.getText()),
                 valor
         );
-
         valoritemText.setText(String.valueOf(valor));
-        
+        JOptionPane.showMessageDialog(null, "Item inserido!");
     }//GEN-LAST:event_inserirItemButtonActionPerformed
 
     private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
@@ -546,6 +546,7 @@ public class NotaView extends javax.swing.JFrame {
         dataText.setText(formato.format(dataAtual));
         
     } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         System.err.println("Erro ao converter o código do cliente: " + e.getMessage());
     }
     }//GEN-LAST:event_codigoClienteComboActionPerformed

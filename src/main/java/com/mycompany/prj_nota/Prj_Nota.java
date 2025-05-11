@@ -6,6 +6,8 @@
 package com.mycompany.prj_nota;
 import com.mycompany.prj_nota.Pck_View.ClienteView;
 
+import javax.swing.*;
+
 /**
  *
  * @author lab03aluno
@@ -13,8 +15,21 @@ import com.mycompany.prj_nota.Pck_View.ClienteView;
 public class Prj_Nota {
 
     public static void main(String[] args) {
-        System.out.println("Rodando...");
-        ClienteView cv = new ClienteView();
-        cv.setVisible(true);
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(
+                        null,
+                        (e.getMessage() != null) ? e.getMessage() : e.toString(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            });
+        });
+
+        SwingUtilities.invokeLater(() -> {
+            ClienteView cv = new ClienteView();
+            cv.setVisible(true);
+        });
     }
+
 }
