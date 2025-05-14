@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -416,7 +417,7 @@ public class NotaView extends javax.swing.JFrame {
         //cpfText.getText();
         //enderecoText.getText();
         PedidoControl objPedidoControl = new PedidoControl();
-        String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
+        String clienteSelecionado = Objects.requireNonNull(codigoClienteCombo.getSelectedItem()).toString();
         try{
             Date dataPedido = new Date();
             objPedidoControl.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
@@ -464,16 +465,16 @@ public class NotaView extends javax.swing.JFrame {
 
     private void inserirItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirItemButtonActionPerformed
         // TODO add your handling code here:
-        int codProduto = Integer.parseInt(codigoProdutoCombo.getSelectedItem().toString());
+        int codProduto = Integer.parseInt(Objects.requireNonNull(codigoProdutoCombo.getSelectedItem()).toString());
         double valor = objProdutoControl.consultarProduto(codProduto)
                 .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
         objItemControl.inserirItem(
                 codProduto,
-                Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
+                Integer.parseInt(Objects.requireNonNull(codigoPedidoCombo.getSelectedItem()).toString()),
                 Integer.parseInt(quantidadeText.getText()),
                 valor
         );
-        valoritemText.setText(String.valueOf(valor));
+        valoritemText.setText(String.format("%.2f", valor));
         JOptionPane.showMessageDialog(null, "Item inserido!");
     }//GEN-LAST:event_inserirItemButtonActionPerformed
 
@@ -500,7 +501,7 @@ public class NotaView extends javax.swing.JFrame {
 
     private void alterarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarItemButtonActionPerformed
         // TODO add your handling code here:
-        String produtoSelecionado = codigoProdutoCombo.getSelectedItem().toString();
+        String produtoSelecionado = Objects.requireNonNull(codigoProdutoCombo.getSelectedItem()).toString();
         objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
                         Integer.parseInt(numeroText.getText()),
                         Integer.parseInt(quantidadeText.getText()),
@@ -576,7 +577,7 @@ public class NotaView extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }

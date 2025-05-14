@@ -23,7 +23,7 @@ public class ItemControl {
                 stmt1.execute();
             }
 
-            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdValorTotal(?)}")) {
+            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
                 stmt2.setInt(1, iCodPedido);
                 stmt2.execute();
             }

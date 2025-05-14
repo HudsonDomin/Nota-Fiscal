@@ -27,8 +27,8 @@ public class Prj_Nota {
         });
 
         SwingUtilities.invokeLater(() -> {
-            ClienteView cv = new ClienteView();
-            cv.setVisible(true);
+            ClienteView objClienteView = new ClienteView();
+            objClienteView.setVisible(true);
         });
     }
 
