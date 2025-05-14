@@ -13,18 +13,18 @@ import java.util.List;
 public class PedidoControl {
 
     public void inserirPedido(Date dData, double fValorTotal, int iCodigo) {
-        PedidoModel pedido = new PedidoModel();
-        pedido.setA02_data(dData);
-        pedido.setA02_valorTotal(fValorTotal);
-        pedido.setA01_codigo(iCodigo);
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_data(dData);
+        objPedidoModel.setA02_valorTotal(fValorTotal);
+        objPedidoModel.setA01_codigo(iCodigo);
 
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}")) {
 
-            stmt.setDate(1, new java.sql.Date(pedido.getA02_data().getTime()));
-            stmt.setDouble(2, pedido.getA02_valorTotal());
-            stmt.setInt(3, pedido.getA01_codigo());
+            stmt.setDate(1, new java.sql.Date(objPedidoModel.getA02_data().getTime()));
+            stmt.setDouble(2, objPedidoModel.getA02_valorTotal());
+            stmt.setInt(3, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
@@ -32,8 +32,8 @@ public class PedidoControl {
     }
 
     public void removerPedido(int iNumero) {
-        ConexaoMySql conexao = new ConexaoMySql();
-        try (var conn = conexao.getConnection();
+        ConexaoMySql objConexaoMySql = new ConexaoMySql();
+        try (var conn = objConexaoMySql.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_DelPedido(?)}")) {
 
             stmt.setInt(1, iNumero);
@@ -44,20 +44,20 @@ public class PedidoControl {
     }
 
     public void atualizarPedido(int iNumero, Date dData, double dValorTotal, int iCodigo) {
-        PedidoModel pedido = new PedidoModel();
-        pedido.setA02_codigo(iNumero);
-        pedido.setA02_data(dData);
-        pedido.setA02_valorTotal(dValorTotal);
-        pedido.setA01_codigo(iCodigo);
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_codigo(iNumero);
+        objPedidoModel.setA02_data(dData);
+        objPedidoModel.setA02_valorTotal(dValorTotal);
+        objPedidoModel.setA01_codigo(iCodigo);
 
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdPedido(?, ?, ?, ?)}")) {
 
-            stmt.setInt(1, pedido.getA02_codigo());
-            stmt.setDate(2, new java.sql.Date(pedido.getA02_data().getTime()));
-            stmt.setDouble(3, pedido.getA02_valorTotal());
-            stmt.setInt(4, pedido.getA01_codigo());
+            stmt.setInt(1, objPedidoModel.getA02_codigo());
+            stmt.setDate(2, new java.sql.Date(objPedidoModel.getA02_data().getTime()));
+            stmt.setDouble(3, objPedidoModel.getA02_valorTotal());
+            stmt.setInt(4, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar pedido: " + e.getMessage());
@@ -65,19 +65,19 @@ public class PedidoControl {
     }
 
     public PedidoModel consultarPedido(int iNumero) {
-        PedidoModel pedido = new PedidoModel();
-        ConexaoMySql conexao = new ConexaoMySql();
-        try (var conn = conexao.getConnection();
+        PedidoModel objPedidoModel = new PedidoModel();
+        ConexaoMySql objConexaoMySql = new ConexaoMySql();
+        try (var conn = objConexaoMySql.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02 WHERE A02_codigo = ?")) {
 
             stmt.setInt(1, iNumero);
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    pedido.setA02_codigo(rs.getInt("A02_codigo"));
-                    pedido.setA02_data(rs.getDate("A02_data"));
-                    pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
-                    pedido.setA01_codigo(rs.getInt("A01_codigo"));
-                    return pedido;
+                    objPedidoModel.setA02_codigo(rs.getInt("A02_codigo"));
+                    objPedidoModel.setA02_data(rs.getDate("A02_data"));
+                    objPedidoModel.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
+                    objPedidoModel.setA01_codigo(rs.getInt("A01_codigo"));
+                    return objPedidoModel;
                 }
             }
         } catch (SQLException e) {
@@ -87,23 +87,23 @@ public class PedidoControl {
     }
 
     public List<PedidoModel> consultarPedidos() {
-        List<PedidoModel> pedidos = new ArrayList<>();
-        ConexaoMySql conexao = new ConexaoMySql();
-        try (var conn = conexao.getConnection();
+        List<PedidoModel> listaPedidos = new ArrayList<>();
+        ConexaoMySql objConexaoMySql = new ConexaoMySql();
+        try (var conn = objConexaoMySql.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PEDIDO_02");
              var rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                PedidoModel pedido = new PedidoModel();
-                pedido.setA02_codigo(rs.getInt("A02_codigo"));
-                pedido.setA02_data(rs.getDate("A02_data"));
-                pedido.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
-                pedido.setA01_codigo(rs.getInt("A01_codigo"));
-                pedidos.add(pedido);
+                PedidoModel objPedidoModel = new PedidoModel();
+                objPedidoModel.setA02_codigo(rs.getInt("A02_codigo"));
+                objPedidoModel.setA02_data(rs.getDate("A02_data"));
+                objPedidoModel.setA02_valorTotal(rs.getDouble("A02_valorTotal"));
+                objPedidoModel.setA01_codigo(rs.getInt("A01_codigo"));
+                listaPedidos.add(objPedidoModel);
             }
         } catch (SQLException e) {
             System.out.println("Erro ao consultar pedidos: " + e.getMessage());
         }
-        return pedidos;
+        return listaPedidos;
     }
 }

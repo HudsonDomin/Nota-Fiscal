@@ -57,16 +57,14 @@ public class ItemControl {
     }
 
 
-    public void atualizarItem(int iCodItem, int iCodProduto, int iCodPedido, int iQuantidade, double dValorItem) {
+    public void atualizarItem(int iCodItem, int iCodPedido, int iQuantidade, double dValorItem) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
-             CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?, ?, ?)}")) {
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?)}")) {
 
             stmt.setInt(1, iCodItem);
-            stmt.setInt(2, iCodProduto);
-            stmt.setInt(3, iCodPedido);
-            stmt.setInt(4, iQuantidade);
-            stmt.setDouble(5, dValorItem);
+            stmt.setInt(2, iQuantidade);
+            stmt.setDouble(3, dValorItem);
             stmt.execute();
             try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
                 stmt2.setInt(1, iCodPedido);

@@ -283,10 +283,10 @@ public class ProdutoView extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
     private void atualizarTabelaProdutos() {
         List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
-        DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
-        tableModel.setRowCount(0);
+        DefaultTableModel objTableModel = (DefaultTableModel) jTable2.getModel();
+        objTableModel.setRowCount(0);
         for (ProdutoModel p : produtos) {
-            tableModel.addRow(new Object[]{
+            objTableModel.addRow(new Object[]{
                     p.getA03_codigo(),
                     p.getA03_descricao(),
                     p.getA03_valorUnitario(),

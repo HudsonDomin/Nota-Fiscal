@@ -40,14 +40,14 @@ public class NotaDetalheView extends javax.swing.JDialog {
        listaItemModel = lItemModel;
        
        tituloPedidoLabel.setText(String.format(
-               "%d-%s", 
+               "%d-%s",
                objPedidoModel.getA02_codigo(), 
                objPedidoModel.getA02_data().toString())
        );
        codClienteText.setText(String.valueOf(objClienteModel.getA01_codigo()));
        cpfText.setText(String.valueOf(objClienteModel.getA01_cpf()));
        nomeClienteText.setText(String.valueOf(objClienteModel.getA01_nome()));
-       valorTotalText.setText(String.valueOf(objPedidoModel.getA02_valorTotal()));
+       valorTotalText.setText(String.format("%.2f", objPedidoModel.getA02_valorTotal()));
        atualizarTabela();
     }
     public NotaDetalheView(java.awt.Frame parent, boolean modal) {
@@ -56,10 +56,10 @@ public class NotaDetalheView extends javax.swing.JDialog {
     }
 
     private void atualizarTabela(){
-       DefaultTableModel tableModel = (DefaultTableModel) tabelaDetalhe.getModel();
-       tableModel.setRowCount(0);
+       DefaultTableModel objTableModel = (DefaultTableModel) tabelaDetalhe.getModel();
+       objTableModel.setRowCount(0);
        for (ItemModel objItemModel : listaItemModel ) {
-           tableModel.addRow(new Object[]{
+           objTableModel.addRow(new Object[]{
                    objItemModel.getA04_codigo(),
                    listaProdutoModel.stream()
                            .filter(p -> p.getA03_codigo() == objItemModel.getA03_codigo())

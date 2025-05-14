@@ -59,8 +59,8 @@ public class ClienteControl {
         objClienteModel.setA01_cpf(sCpf);
         objClienteModel.setA01_credito(fCredito);
 
-        ConexaoMySql conexao = new ConexaoMySql();
-        try (Connection conn = conexao.getConnection();
+        ConexaoMySql objConexaoMySql = new ConexaoMySql();
+        try (Connection conn = objConexaoMySql.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdCliente(?, ?, ?, ?, ?, ?)}")) {
 
             stmt.setInt(1, objClienteModel.getA01_codigo());

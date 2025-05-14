@@ -5,20 +5,20 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private Properties properties = new Properties();
+    private final Properties objProperties = new Properties();
 
-    public Config(String fileName) {
-        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
+    public Config(String sFileName) {
+        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(sFileName)) {
             if (input == null) {
-                throw new IOException("Arquivo " + fileName + " não encontrado no classpath.");
+                throw new IOException("Arquivo " + sFileName + " não encontrado no classpath.");
             }
-            properties.load(input);
+            objProperties.load(input);
         } catch (IOException ex) {
             System.out.println("Erro ao carregar configurações: " + ex.getMessage());
         }
     }
 
     public String get(String key) {
-        return properties.getProperty(key);
+        return objProperties.getProperty(key);
     }
 }

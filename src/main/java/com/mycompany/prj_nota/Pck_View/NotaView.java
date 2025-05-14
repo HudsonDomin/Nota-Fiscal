@@ -416,8 +416,8 @@ public class NotaView extends javax.swing.JFrame {
         objNotaView.setVisible(true);
         dispose();
         try{
-            Date dataPedido = new Date();
-            objPedidoControl.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
+            Date objDate = new Date();
+            objPedidoControl.inserirPedido(objDate, 0, Integer.parseInt(clienteSelecionado));
             JOptionPane.showMessageDialog(null, "Pedido inserido!");
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -428,6 +428,7 @@ public class NotaView extends javax.swing.JFrame {
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
         // TODO add your handling code here:
         objPedidoControl.removerPedido(Integer.parseInt(numeroText.getText()));
+        JOptionPane.showMessageDialog(null, "Pedido removido!");
     }//GEN-LAST:event_removerButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
@@ -488,10 +489,10 @@ public class NotaView extends javax.swing.JFrame {
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
         // TODO add your handling code here:
         String clienteSelecionado = codigoClienteCombo.getSelectedItem().toString();
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat objSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try{
-            Date dataPedido = format.parse(dataText.getText());
-            objPedidoControl.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+            Date objDate = objSimpleDateFormat.parse(dataText.getText());
+            objPedidoControl.atualizarPedido(Integer.parseInt(numeroText.getText()),objDate ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
             JOptionPane.showMessageDialog(null, "Pedido atualizado!");
         }catch(ParseException e){
             System.out.println("Erro ao formatar: " + e.getMessage());
@@ -500,11 +501,14 @@ public class NotaView extends javax.swing.JFrame {
 
     private void alterarItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarItemButtonActionPerformed
         // TODO add your handling code here:
-        String produtoSelecionado = Objects.requireNonNull(codigoProdutoCombo.getSelectedItem()).toString();
-        objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),Integer.parseInt(produtoSelecionado),
-                        Integer.parseInt(numeroText.getText()),
+        double valor = objProdutoControl
+                .consultarProduto(objItemControl.consultarItem(Integer.parseInt(codigoitemText.getText())).getA03_codigo())
+                .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
+
+        objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),
+                        Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
                         Integer.parseInt(quantidadeText.getText()),
-                        Integer.parseInt(valoritemText.getText()));
+                        valor);
         JOptionPane.showMessageDialog(null, "Item atualizado!");
     }//GEN-LAST:event_alterarItemButtonActionPerformed
 
@@ -535,16 +539,16 @@ public class NotaView extends javax.swing.JFrame {
        String clienteSelecionado = (String) codigoClienteCombo.getSelectedItem();
     
     try {
-        Integer codigoClienteSelecionado = Integer.parseInt(clienteSelecionado);
+        int codigoClienteSelecionado = Integer.parseInt(clienteSelecionado);
         
         ClienteModel objClienteModel = objClienteControl.consultarCliente(codigoClienteSelecionado);
         
         cpfText.setText(objClienteModel.getA01_cpf());
         enderecoText.setText(objClienteModel.getA01_endereco());
         
-        Date dataAtual = new Date();
+        Date objDate = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        dataText.setText(formato.format(dataAtual));
+        dataText.setText(formato.format(objDate));
         
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

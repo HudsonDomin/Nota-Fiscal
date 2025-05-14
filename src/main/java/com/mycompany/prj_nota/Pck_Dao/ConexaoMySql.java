@@ -4,10 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class ConexaoMySql {
     private Connection conn;
     private String url;
@@ -16,11 +12,11 @@ public class ConexaoMySql {
     private String driver;
 
     public ConexaoMySql() {
-        Config config = new Config("config.properties");
-        url = config.get("db.url");
-        user = config.get("db.user");
-        password = config.get("db.password");
-        driver = config.get("db.driver");
+        Config objConfig = new Config("config.properties");
+        url = objConfig.get("db.url");
+        user = objConfig.get("db.user");
+        password = objConfig.get("db.password");
+        driver = objConfig.get("db.driver");
 
         try {
             Class.forName(driver);
@@ -36,7 +32,7 @@ public class ConexaoMySql {
                 System.out.println("Conectado ao banco");
             }
         } catch (SQLException e) {
-            System.out.println("Erro na conexão: " + e.toString());
+            System.out.println("Erro na conexão: " + e);
         }
         return conn;
     }
@@ -48,7 +44,7 @@ public class ConexaoMySql {
                 System.out.println("Conexão encerrada");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao fechar conexão: " + e.toString());
+            System.out.println("Erro ao fechar conexão: " + e);
         }
     }
 }
