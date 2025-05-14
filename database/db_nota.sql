@@ -60,7 +60,7 @@ CREATE TABLE PEDIDO_02 (
                            PRIMARY KEY (A02_codigo),
                            FOREIGN KEY (A01_codigo) REFERENCES CLIENTE_01 (A01_codigo)
 );
-
+SELECT * FROM CLIENTE_01;
 DELIMITER $$
 
 CREATE PROCEDURE Proc_InsPedido(
@@ -101,7 +101,6 @@ CREATE TABLE PRODUTO_03 (
 );
 
 DELIMITER $$
-
 CREATE PROCEDURE Proc_InsProduto(
     IN V_A03_descricao VARCHAR(50),
     IN V_A03_valorUnitario DECIMAL(10,2),
@@ -128,7 +127,9 @@ END$$
 
 CREATE PROCEDURE Proc_DelProduto(IN V_A03_codigo INT)
 BEGIN
-DELETE FROM PRODUTO_03 WHERE A03_codigo = V_A03_codigo;
+UPDATE PRODUTO_03
+SET A03_estoque = 0
+WHERE A03_codigo = V_A03_codigo;
 END$$
 
 DELIMITER ;
@@ -141,7 +142,7 @@ CREATE TABLE ITEM_04 (
                          A04_quantidade INT,
                          A04_valorItem DECIMAL(10,2),
                          PRIMARY KEY (A04_codigo),
-                         FOREIGN KEY (A03_codigo) REFERENCES PRODUTO_03 (A03_codigo) ON DELETE CASCADE,
+                         FOREIGN KEY (A03_codigo) REFERENCES PRODUTO_03 (A03_codigo),
                          FOREIGN KEY (A02_codigo) REFERENCES PEDIDO_02 (A02_codigo) ON DELETE CASCADE
 );
 
@@ -175,7 +176,7 @@ BEGIN
 DELETE FROM ITEM_04 WHERE A04_codigo = V_A04_codigo;
 END$$
 
-CREATE PROCEDURE Proc_UpdPedidoValorTotal(IN V_A02_codigo INT)
+CREATE PROCEDURE Proc_UpdValorTotalPedido(IN V_A02_codigo INT)
 BEGIN
 UPDATE PEDIDO_02
     JOIN (

@@ -68,6 +68,10 @@ public class ItemControl {
             stmt.setInt(4, iQuantidade);
             stmt.setDouble(5, dValorItem);
             stmt.execute();
+            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
+                stmt2.setInt(1, iCodPedido);
+                stmt2.execute();
+            }
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar item: " + e.getMessage());
         }
@@ -75,11 +79,17 @@ public class ItemControl {
 
     public void deletarItem(int iCodItem) {
         ConexaoMySql conexao = new ConexaoMySql();
+        int codProduto = consultarItem(iCodItem).getA02_codigo();
+
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_Delitem(?)}")) {
 
             stmt.setInt(1, iCodItem);
             stmt.execute();
+            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
+                stmt2.setInt(1, codProduto);
+                stmt2.execute();
+            }
         } catch (SQLException e) {
             System.out.println("Erro ao remover item: " + e.getMessage());
         }
