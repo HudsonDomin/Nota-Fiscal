@@ -176,7 +176,7 @@ BEGIN
 DELETE FROM ITEM_04 WHERE A04_codigo = V_A04_codigo;
 END$$
 
-CREATE PROCEDURE Proc_UpdValorTotalPedido(IN V_A02_codigo INT)
+CREATE PROCEDURE Proc_UpdPedidoValorTotal(IN V_A02_codigo INT)
 BEGIN
 UPDATE PEDIDO_02
     JOIN (

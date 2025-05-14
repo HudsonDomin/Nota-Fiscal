@@ -410,14 +410,11 @@ public class NotaView extends javax.swing.JFrame {
 
     private void inserirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirButtonActionPerformed
         // TODO add your handling code here:
-        //numeroText.getText();
-        //codigoClientCombo.getText();
-        //dataText.getText();
-        //nomeCombo.getText();
-        //cpfText.getText();
-        //enderecoText.getText();
         PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = Objects.requireNonNull(codigoClienteCombo.getSelectedItem()).toString();
+        NotaView objNotaView = new NotaView();
+        objNotaView.setVisible(true);
+        dispose();
         try{
             Date dataPedido = new Date();
             objPedidoControl.inserirPedido(dataPedido, 0, Integer.parseInt(clienteSelecionado));
@@ -481,6 +478,7 @@ public class NotaView extends javax.swing.JFrame {
     private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
         // TODO add your handling code here:
         objItemControl.deletarItem(Integer.parseInt(codigoitemText.getText()));
+        JOptionPane.showMessageDialog(null, "Item removido!");
     }//GEN-LAST:event_removerItemButtonActionPerformed
 
     private void codigoitemTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoitemTextActionPerformed
@@ -494,6 +492,7 @@ public class NotaView extends javax.swing.JFrame {
         try{
             Date dataPedido = format.parse(dataText.getText());
             objPedidoControl.atualizarPedido(Integer.parseInt(numeroText.getText()),dataPedido ,Double.parseDouble(valoritemText.getText()), Integer.parseInt(clienteSelecionado));
+            JOptionPane.showMessageDialog(null, "Pedido atualizado!");
         }catch(ParseException e){
             System.out.println("Erro ao formatar: " + e.getMessage());
         }  
@@ -506,6 +505,7 @@ public class NotaView extends javax.swing.JFrame {
                         Integer.parseInt(numeroText.getText()),
                         Integer.parseInt(quantidadeText.getText()),
                         Integer.parseInt(valoritemText.getText()));
+        JOptionPane.showMessageDialog(null, "Item atualizado!");
     }//GEN-LAST:event_alterarItemButtonActionPerformed
 
     private void clientesMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientesMenuMouseClicked
