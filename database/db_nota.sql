@@ -1,6 +1,20 @@
 CREATE DATABASE db_nota;
 USE db_nota;
 
+
+/*
+Composto por 4 entidades principais
+Cliente, Pedido, Produto e Item
+
+Relacionadas de forma lógica
+Um cliente pode ter vários pedidos
+Um pedido pode ter vários itens
+Cada item se refere a um produto específico
+
+
+*/
+
+
 -- CLIENTE
 CREATE TABLE CLIENTE_01 (
                             A01_codigo INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,6 +62,8 @@ CREATE PROCEDURE Proc_DelCliente(IN V_A01_codigo INT)
 BEGIN
 UPDATE CLIENTE_01 SET A01_ativo = FALSE WHERE A01_codigo = V_A01_codigo;
 END$$
+
+  /*Ao invés de excluir o cliente, o campo A01_ativo é alterado para FALSE, o que preserva o histórico, uma boa prática usada em sistemas reais "soft delete" */
 
 DELIMITER ;
 
@@ -176,6 +192,8 @@ BEGIN
 DELETE FROM ITEM_04 WHERE A04_codigo = V_A04_codigo;
 END$$
 
+/* ON DELETE CASCADE, garante que ao excluir um pedido, seus itens também sejam removidos automaticamente*/
+  
 CREATE PROCEDURE Proc_UpdPedidoValorTotal(IN V_A02_codigo INT)
 BEGIN
 UPDATE PEDIDO_02
@@ -187,5 +205,7 @@ UPDATE PEDIDO_02
     ) i ON PEDIDO_02.A02_codigo = i.A02_codigo
     SET PEDIDO_02.A02_valorTotal = i.totalPedido;
 END$$
+
+  /* Uma procedure adicional UpdPedidoValorTotal que recalcula automaticamente o valor total de um pedido com base nos itens inseridos*/
 
 DELIMITER ;
