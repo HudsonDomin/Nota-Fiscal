@@ -412,13 +412,12 @@ public class NotaView extends javax.swing.JFrame {
         // TODO add your handling code here:
         PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = Objects.requireNonNull(codigoClienteCombo.getSelectedItem()).toString();
-        NotaView objNotaView = new NotaView();
-        objNotaView.setVisible(true);
-        dispose();
         try{
-            Date objDate = new Date();
-            objPedidoControl.inserirPedido(objDate, 0, Integer.parseInt(clienteSelecionado));
+            objPedidoControl.inserirPedido(0, Integer.parseInt(clienteSelecionado));
             JOptionPane.showMessageDialog(null, "Pedido inserido!");
+            NotaView objNotaView = new NotaView();
+            objNotaView.setVisible(true);
+            dispose();
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             System.out.println(e.getMessage());
@@ -466,14 +465,19 @@ public class NotaView extends javax.swing.JFrame {
         int codProduto = Integer.parseInt(Objects.requireNonNull(codigoProdutoCombo.getSelectedItem()).toString());
         double valor = objProdutoControl.consultarProduto(codProduto)
                 .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
-        objItemControl.inserirItem(
-                codProduto,
-                Integer.parseInt(Objects.requireNonNull(codigoPedidoCombo.getSelectedItem()).toString()),
-                Integer.parseInt(quantidadeText.getText()),
-                valor
-        );
-        valoritemText.setText(String.format("%.2f", valor));
-        JOptionPane.showMessageDialog(null, "Item inserido!");
+        try {
+            objItemControl.inserirItem(
+                    codProduto,
+                    Integer.parseInt(Objects.requireNonNull(codigoPedidoCombo.getSelectedItem()).toString()),
+                    Integer.parseInt(quantidadeText.getText()),
+                    valor
+            );
+            valoritemText.setText(String.format("%.2f", valor));
+            JOptionPane.showMessageDialog(null, "Item inserido!");
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_inserirItemButtonActionPerformed
 
     private void removerItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemButtonActionPerformed
@@ -506,7 +510,6 @@ public class NotaView extends javax.swing.JFrame {
                 .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
 
         objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),
-                        Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
                         Integer.parseInt(quantidadeText.getText()),
                         valor);
         JOptionPane.showMessageDialog(null, "Item atualizado!");

@@ -13,51 +13,22 @@ public class ItemControl {
     public void inserirItem(int iCodProduto, int iCodPedido, int iQuantidade, double dValorItem) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection()) {
-            conn.setAutoCommit(false);
-
-            try (CallableStatement stmt1 = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
-                stmt1.setInt(1, iCodProduto);
-                stmt1.setInt(2, iCodPedido);
-                stmt1.setInt(3, iQuantidade);
-                stmt1.setDouble(4, dValorItem);
-                stmt1.execute();
+            try (CallableStatement stmt = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
+                stmt.setInt(1, iCodProduto);
+                stmt.setInt(2, iCodPedido);
+                stmt.setInt(3, iQuantidade);
+                stmt.setDouble(4, dValorItem);
+                stmt.execute();
             }
-
-            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
-                stmt2.setInt(1, iCodPedido);
-                stmt2.execute();
-            }
-
-            try(CallableStatement stmt3 = conn.prepareCall("{CALL Proc_UpdProduto(?, ?, ?, ?)}")){
-                ProdutoControl objProdutoControl = new ProdutoControl();
-                ProdutoModel objProdutoModel = objProdutoControl.consultarProduto(iCodProduto);
-                int quantidadeRestante = objProdutoModel.getA03_estoque() - iQuantidade;
-                if(quantidadeRestante < 0){
-                    throw new IllegalArgumentException("Sem estoque o suficiente");
-                }
-                stmt3.setInt(1, objProdutoModel.getA03_codigo());
-                stmt3.setString(2, objProdutoModel.getA03_descricao());
-                stmt3.setDouble(3, objProdutoModel.getA03_valorUnitario());
-                stmt3.setInt(4, objProdutoModel.getA03_estoque() - iQuantidade);
-                stmt3.execute();
-            }
-
-            conn.commit();
-
         } catch (SQLException e) {
-            try {
-                System.out.println("Erro, desfazendo transação: " + e.getMessage());
-                conexao.getConnection().rollback();
-            } catch (SQLException rollbackEx) {
-                System.out.println("Erro ao fazer rollback: " + rollbackEx.getMessage());
-            }
-        } catch (IllegalArgumentException e){
-            System.out.println("Erro ao criar item: " + e.getMessage());
+            System.out.println("Erro ao inserir item: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
 
-    public void atualizarItem(int iCodItem, int iCodPedido, int iQuantidade, double dValorItem) {
+
+    public void atualizarItem(int iCodItem, int iQuantidade, double dValorItem) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?)}")) {
@@ -66,10 +37,7 @@ public class ItemControl {
             stmt.setInt(2, iQuantidade);
             stmt.setDouble(3, dValorItem);
             stmt.execute();
-            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
-                stmt2.setInt(1, iCodPedido);
-                stmt2.execute();
-            }
+
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar item: " + e.getMessage());
         }
@@ -77,21 +45,18 @@ public class ItemControl {
 
     public void deletarItem(int iCodItem) {
         ConexaoMySql conexao = new ConexaoMySql();
-        int codProduto = consultarItem(iCodItem).getA02_codigo();
-
-        try (var conn = conexao.getConnection();
-             CallableStatement stmt = conn.prepareCall("{CALL Proc_Delitem(?)}")) {
-
-            stmt.setInt(1, iCodItem);
-            stmt.execute();
-            try (CallableStatement stmt2 = conn.prepareCall("{CALL Proc_UpdPedidoValorTotal(?)}")) {
-                stmt2.setInt(1, codProduto);
-                stmt2.execute();
+        try (var conn = conexao.getConnection()) {
+            try (CallableStatement stmt = conn.prepareCall("{CALL Proc_DelItem(?)}")) {
+                stmt.setInt(1, iCodItem);
+                stmt.execute();
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao remover item: " + e.getMessage());
+            System.out.println("Erro ao deletar item: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
+
 
     public ItemModel consultarItem(int iCodItem) {
         ItemModel item = new ItemModel();
