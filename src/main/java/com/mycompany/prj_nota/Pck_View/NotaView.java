@@ -413,8 +413,7 @@ public class NotaView extends javax.swing.JFrame {
         PedidoControl objPedidoControl = new PedidoControl();
         String clienteSelecionado = Objects.requireNonNull(codigoClienteCombo.getSelectedItem()).toString();
         try{
-            Date objDate = new Date();
-            objPedidoControl.inserirPedido(objDate, 0, Integer.parseInt(clienteSelecionado));
+            objPedidoControl.inserirPedido(0, Integer.parseInt(clienteSelecionado));
             JOptionPane.showMessageDialog(null, "Pedido inserido!");
             NotaView objNotaView = new NotaView();
             objNotaView.setVisible(true);
@@ -511,7 +510,6 @@ public class NotaView extends javax.swing.JFrame {
                 .getA03_valorUnitario() * Integer.parseInt(quantidadeText.getText());
 
         objItemControl.atualizarItem(Integer.parseInt(codigoitemText.getText()),
-                        Integer.parseInt(codigoPedidoCombo.getSelectedItem().toString()),
                         Integer.parseInt(quantidadeText.getText()),
                         valor);
         JOptionPane.showMessageDialog(null, "Item atualizado!");

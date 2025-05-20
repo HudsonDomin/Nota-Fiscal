@@ -12,19 +12,16 @@ import java.util.List;
 
 public class PedidoControl {
 
-    public void inserirPedido(Date dData, double fValorTotal, int iCodigo) {
+    public void inserirPedido(double fValorTotal, int iCodigo) {
         PedidoModel objPedidoModel = new PedidoModel();
-        objPedidoModel.setA02_data(dData);
         objPedidoModel.setA02_valorTotal(fValorTotal);
         objPedidoModel.setA01_codigo(iCodigo);
 
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
-             CallableStatement stmt = conn.prepareCall("{CALL Proc_InsPedido(?, ?, ?)}")) {
-
-            stmt.setDate(1, new java.sql.Date(objPedidoModel.getA02_data().getTime()));
-            stmt.setDouble(2, objPedidoModel.getA02_valorTotal());
-            stmt.setInt(3, objPedidoModel.getA01_codigo());
+             CallableStatement stmt = conn.prepareCall("{CALL Proc_InsPedido(?, ?)}")) {
+            stmt.setDouble(1, objPedidoModel.getA02_valorTotal());
+            stmt.setInt(2, objPedidoModel.getA01_codigo());
             stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Erro ao inserir pedido: " + e.getMessage());
