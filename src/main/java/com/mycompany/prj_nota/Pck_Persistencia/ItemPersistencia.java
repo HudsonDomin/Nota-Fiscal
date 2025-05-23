@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemPersistencia {
-    public void inserirItemPersistencia(int iCodProduto, int iCodPedido, int iQuantidade, double dValorItem){
+    public void inserirItemPersistencia(ItemModel oItemModel) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection()) {
             try (CallableStatement stmt = conn.prepareCall("{CALL Proc_InsItem(?, ?, ?, ?)}")) {
-                stmt.setInt(1, iCodProduto);
-                stmt.setInt(2, iCodPedido);
-                stmt.setInt(3, iQuantidade);
-                stmt.setDouble(4, dValorItem);
+                stmt.setInt(1, oItemModel.getA03_codigo());
+                stmt.setInt(2, oItemModel.getA02_codigo());
+                stmt.setInt(3, oItemModel.getA04_quantidade());
+                stmt.setDouble(4, oItemModel.getA04_valorItem());
                 stmt.execute();
             }
         } catch (SQLException e) {
@@ -25,26 +25,27 @@ public class ItemPersistencia {
         }
     }
     
-    public void atualizarItemPersistencia(int iCodItem, int iQuantidade, double dValorItem) {
+    public void atualizarItemPersistencia(ItemModel oItemModel) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdItem(?, ?, ?)}")) {
 
-            stmt.setInt(1, iCodItem);
-            stmt.setInt(2, iQuantidade);
-            stmt.setDouble(3, dValorItem);
+            stmt.setInt(1, oItemModel.getA04_codigo());
+            stmt.setInt(2, oItemModel.getA04_quantidade());
+            stmt.setDouble(3, oItemModel.getA04_valorItem());
             stmt.execute();
 
         } catch (SQLException e) {
             System.out.println("Erro ao atualizar item: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
     
-    public void deletarItemPersistencia(int iCodItem){
+    public void deletarItemPersistencia(ItemModel oItemModel) {
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection()) {
             try (CallableStatement stmt = conn.prepareCall("{CALL Proc_DelItem(?)}")) {
-                stmt.setInt(1, iCodItem);
+                stmt.setInt(1, oItemModel.getA04_codigo());
                 stmt.execute();
             }
         } catch (SQLException e) {
@@ -53,13 +54,13 @@ public class ItemPersistencia {
         }
     }
     
-    public ItemModel consultarItensPersistencia (int iCodItem) {
+    public ItemModel consultarItensPersistencia (ItemModel oItemModel) {
         ItemModel item = new ItemModel();
         ConexaoMySql conexao = new ConexaoMySql();
         try (var conn = conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ITEM_04 WHERE A04_codigo = ?")) {
 
-            stmt.setInt(1, iCodItem);
+            stmt.setInt(1, oItemModel.getA04_codigo());
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     item.setA04_codigo(rs.getInt("A04_codigo"));

@@ -15,24 +15,36 @@ import java.util.List;
 public class ProdutoControl {
 
     public void inserirProduto(String sDescricao, double dValor, int iEstoque) {
+        ProdutoModel objProdutoModel = new ProdutoModel();
+        objProdutoModel.setA03_descricao(sDescricao);
+        objProdutoModel.setA03_valorUnitario(dValor);
+        objProdutoModel.setA03_estoque(iEstoque);
         ProdutoPersistencia  objProdutoPersistencia = new ProdutoPersistencia();
-        objProdutoPersistencia.inserirProdutoPersistencia(sDescricao, dValor, iEstoque);
+        objProdutoPersistencia.inserirProdutoPersistencia(objProdutoModel);
     }
 
     public void deletarProduto(int iCodigo) {
+        ProdutoModel objProdutoModel = new ProdutoModel();
+        objProdutoModel.setA03_codigo(iCodigo);
         ProdutoPersistencia objProdutoPersistencia = new ProdutoPersistencia();
-        objProdutoPersistencia.deletarProdutoPersistencia(iCodigo);
+        objProdutoPersistencia.deletarProdutoPersistencia(objProdutoModel);
     }
 
     public void atualizarProduto(int iCodigo, String sDescricao, double dValor, int iEstoque) {
+        ProdutoModel objProdutoModel = new ProdutoModel();
+        objProdutoModel.setA03_codigo(iCodigo);
+        objProdutoModel.setA03_descricao(sDescricao);
+        objProdutoModel.setA03_valorUnitario(dValor);
+        objProdutoModel.setA03_estoque(iEstoque);
         ProdutoPersistencia objProdutoPersistencia = new ProdutoPersistencia();
-        objProdutoPersistencia.atualizarProdutoPersistencia(iCodigo, sDescricao, dValor, iEstoque);
+        objProdutoPersistencia.atualizarProdutoPersistencia(objProdutoModel);
     }
 
     public ProdutoModel consultarProduto(int iCodigo) {
+        ProdutoModel objProdutoModel = new ProdutoModel();
+        objProdutoModel.setA03_codigo(iCodigo);
         ProdutoPersistencia objProdutoPersistencia = new ProdutoPersistencia();
-        objProdutoPersistencia.consultarProdutosPersistencia(iCodigo);
-        return null;
+        return objProdutoPersistencia.consultarProdutosPersistencia(objProdutoModel);
     }
 
     public List<ProdutoModel> consultarProdutos() {

@@ -13,19 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoPersistencia {
-    public void inserirProdutoPersistencia(String sDescricao, double dValor, int iEstoque){
-        ProdutoModel objProdutoModel = new ProdutoModel();
-        objProdutoModel.setA03_descricao(sDescricao);
-        objProdutoModel.setA03_valorUnitario(dValor);
-        objProdutoModel.setA03_estoque(iEstoque);
-
+    public void inserirProdutoPersistencia(ProdutoModel oProdutoModel){
         ConexaoMySql objConexaoMySql = new ConexaoMySql();
         try (Connection conn = objConexaoMySql.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_InsProduto(?, ?, ?)}")) {
 
-            stmt.setString(1, objProdutoModel.getA03_descricao());
-            stmt.setDouble(2, objProdutoModel.getA03_valorUnitario());
-            stmt.setInt(3, objProdutoModel.getA03_estoque());
+            stmt.setString(1, oProdutoModel.getA03_descricao());
+            stmt.setDouble(2, oProdutoModel.getA03_valorUnitario());
+            stmt.setInt(3, oProdutoModel.getA03_estoque());
             stmt.execute();
 
         } catch (SQLException e) {
@@ -33,12 +28,12 @@ public class ProdutoPersistencia {
         }
     }
     
-    public void deletarProdutoPersistencia(int iCodigo) {
+    public void deletarProdutoPersistencia(ProdutoModel oProdutoModel) {
         ConexaoMySql objConexaoMySql = new ConexaoMySql();
         try (Connection conn = objConexaoMySql.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_DelProduto(?)}")) {
 
-            stmt.setInt(1, iCodigo);
+            stmt.setInt(1, oProdutoModel.getA03_codigo());
             stmt.execute();
 
         } catch (SQLException e) {
@@ -46,21 +41,15 @@ public class ProdutoPersistencia {
         }
     }
     
-    public void atualizarProdutoPersistencia(int iCodigo, String sDescricao, double dValor, int iEstoque) {
-        ProdutoModel objProdutoModel = new ProdutoModel();
-        objProdutoModel.setA03_codigo(iCodigo);
-        objProdutoModel.setA03_descricao(sDescricao);
-        objProdutoModel.setA03_valorUnitario(dValor);
-        objProdutoModel.setA03_estoque(iEstoque);
-
+    public void atualizarProdutoPersistencia(ProdutoModel oProdutoModel) {
         ConexaoMySql objConexaoMySql = new ConexaoMySql();
         try (Connection conn = objConexaoMySql.getConnection();
              CallableStatement stmt = conn.prepareCall("{CALL Proc_UpdProduto(?, ?, ?, ?)}")) {
 
-            stmt.setInt(1, objProdutoModel.getA03_codigo());
-            stmt.setString(2, objProdutoModel.getA03_descricao());
-            stmt.setDouble(3, objProdutoModel.getA03_valorUnitario());
-            stmt.setInt(4, objProdutoModel.getA03_estoque());
+            stmt.setInt(1, oProdutoModel.getA03_codigo());
+            stmt.setString(2, oProdutoModel.getA03_descricao());
+            stmt.setDouble(3, oProdutoModel.getA03_valorUnitario());
+            stmt.setInt(4, oProdutoModel.getA03_estoque());
             stmt.execute();
 
         } catch (SQLException e) {
@@ -68,20 +57,19 @@ public class ProdutoPersistencia {
         }
     }
     
-    public ProdutoModel consultarProdutosPersistencia(int iCodigo) {
-        ProdutoModel objProdutoModel = new ProdutoModel();
+    public ProdutoModel consultarProdutosPersistencia(ProdutoModel oProdutoModel) {
         ConexaoMySql objConexaoMySql = new ConexaoMySql();
         try (Connection conn = objConexaoMySql.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM PRODUTO_03 WHERE A03_codigo = ?")) {
 
-            stmt.setInt(1, iCodigo);
+            stmt.setInt(1, oProdutoModel.getA03_codigo());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    objProdutoModel.setA03_codigo(rs.getInt("A03_codigo"));
-                    objProdutoModel.setA03_descricao(rs.getString("A03_descricao"));
-                    objProdutoModel.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
-                    objProdutoModel.setA03_estoque(rs.getInt("A03_estoque"));
-                    return objProdutoModel;
+                    oProdutoModel.setA03_codigo(rs.getInt("A03_codigo"));
+                    oProdutoModel.setA03_descricao(rs.getString("A03_descricao"));
+                    oProdutoModel.setA03_valorUnitario(rs.getDouble("A03_valorUnitario"));
+                    oProdutoModel.setA03_estoque(rs.getInt("A03_estoque"));
+                    return oProdutoModel;
                 }
             }
 

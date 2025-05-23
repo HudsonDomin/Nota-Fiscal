@@ -13,25 +13,36 @@ import java.util.List;
 
 public class PedidoControl {
 
-    public void inserirPedido(double fValorTotal, int iCodigo) {
+    public void inserirPedido(double fValorTotal, int iCodCliente) {
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_valorTotal(fValorTotal);
+        objPedidoModel.setA01_codigo(iCodCliente);
         PedidoPersistencia objPedidoPersistencia = new PedidoPersistencia();
-        objPedidoPersistencia.inserirPedidoPersistencia(fValorTotal, iCodigo);
+        objPedidoPersistencia.inserirPedidoPersistencia(objPedidoModel);
     }
 
-    public void removerPedido(int iNumero) {
+    public void removerPedido(int iCodigo) {
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_codigo(iCodigo);
         PedidoPersistencia objPedidoPersistencia = new PedidoPersistencia();
-        objPedidoPersistencia.removerPedidoPersistencia(iNumero);
+        objPedidoPersistencia.removerPedidoPersistencia(objPedidoModel);
     }
 
-    public void atualizarPedido(int iNumero, Date dData, double dValorTotal, int iCodigo) {
+    public void atualizarPedido(int iCodigo, Date dData, double dValorTotal, int iCodCliente) {
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_codigo(iCodigo);
+        objPedidoModel.setA01_codigo(iCodCliente);
+        objPedidoModel.setA02_valorTotal(dValorTotal);
+        objPedidoModel.setA02_data(dData);
         PedidoPersistencia objPedidoPersistencia = new PedidoPersistencia();
-        objPedidoPersistencia.atualizarPedidoPersistencia(iNumero, dData, dValorTotal, iCodigo);
+        objPedidoPersistencia.atualizarPedidoPersistencia(objPedidoModel);
     }
 
-    public PedidoModel consultarPedido(int iNumero) {
+    public PedidoModel consultarPedido(int iCodigo) {
+        PedidoModel objPedidoModel = new PedidoModel();
+        objPedidoModel.setA02_codigo(iCodigo);
         PedidoPersistencia objPedidoPersistencia = new PedidoPersistencia();
-        objPedidoPersistencia.consultarPedidoPersistencia(iNumero);
-        return null;
+        return objPedidoPersistencia.consultarPedidoPersistencia(objPedidoModel);
     }
 
     public List<PedidoModel> consultarPedidos() {

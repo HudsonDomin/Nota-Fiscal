@@ -1,15 +1,7 @@
 package com.mycompany.prj_nota.Pck_Control;
 
-import com.mycompany.prj_nota.Pck_Dao.ConexaoMySql;
 import com.mycompany.prj_nota.Pck_Model.ClienteModel;
 import com.mycompany.prj_nota.Pck_Persistencia.ClientePersistencia;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteControl {
@@ -28,8 +20,10 @@ public class ClienteControl {
     }
 
     public void removerCliente(int iCodigo) {
+        ClienteModel objClienteModel = new ClienteModel();
+        objClienteModel.setA01_codigo(iCodigo);
         ClientePersistencia objClientePersistencia = new ClientePersistencia();
-            objClientePersistencia.removerClientePersistencia(iCodigo);
+        objClientePersistencia.removerClientePersistencia(objClienteModel);
     }
 
     public void atualizarCliente(int iCodigo, String sNome, String sEndereco, String sTelefone, String sCpf, double fCredito) {
@@ -46,9 +40,10 @@ public class ClienteControl {
     }
 
     public ClienteModel consultarCliente(int iCodigo) {
+        ClienteModel objClienteModel = new ClienteModel();
+        objClienteModel.setA01_codigo(iCodigo);
         ClientePersistencia objClientePersistencia = new ClientePersistencia();
-        objClientePersistencia.consultarClientePersistencia(iCodigo);
-        return null;
+        return objClientePersistencia.consultarClientePersistencia(objClienteModel);
     }
 
     public List<ClienteModel> consultarClientes() {
