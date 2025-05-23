@@ -188,14 +188,20 @@ END$$
 
 CREATE PROCEDURE Proc_UpdPedidoValorTotal(IN V_A02_codigo INT)
 BEGIN
+    DECLARE V_totalPedido DECIMAL(10,2);
+
+    SELECT SUM(A04_valorItem)
+    INTO V_totalPedido
+    FROM ITEM_04
+    WHERE A02_codigo = V_A02_codigo;
+
+    IF V_totalPedido IS NULL THEN
+        SET V_totalPedido = 0;
+    END IF;
+
     UPDATE PEDIDO_02
-    JOIN (
-        SELECT A02_codigo, SUM(A04_valorItem) AS totalPedido
-        FROM ITEM_04
-        WHERE A02_codigo = V_A02_codigo
-        GROUP BY A02_codigo
-    ) i ON PEDIDO_02.A02_codigo = i.A02_codigo
-    SET PEDIDO_02.A02_valorTotal = i.totalPedido;
+    SET A02_valorTotal = V_totalPedido
+    WHERE A02_codigo = V_A02_codigo;
 END$$
 
 /* Procedure adicional para recalcular o valor total do pedido */
@@ -308,6 +314,10 @@ AFTER INSERT ON ITEM_04
 FOR EACH ROW
 BEGIN
     CALL Proc_UpdPedidoValorTotal(NEW.A02_codigo);
+
+    UPDATE PRODUTO_03
+    SET A03_estoque = A03_estoque - NEW.A04_quantidade
+    WHERE A03_codigo = NEW.A03_codigo;
 END$$
 
 CREATE TRIGGER Trg_DepoisUpdItem
@@ -315,6 +325,9 @@ AFTER UPDATE ON ITEM_04
 FOR EACH ROW
 BEGIN
     CALL Proc_UpdPedidoValorTotal(NEW.A02_codigo);
+    UPDATE PRODUTO_03
+    SET A03_estoque = A03_estoque + OLD.A04_quantidade - NEW.A04_quantidade
+    WHERE A03_codigo = NEW.A03_codigo;
 END$$
 
 CREATE TRIGGER Trg_DepoisDelItem
@@ -322,6 +335,9 @@ AFTER DELETE ON ITEM_04
 FOR EACH ROW
 BEGIN
     CALL Proc_UpdPedidoValorTotal(OLD.A02_codigo);
+    UPDATE PRODUTO_03
+    SET A03_estoque = A03_estoque + OLD.A04_quantidade
+    WHERE A03_codigo = OLD.A03_codigo;
 END$$
 
 DELIMITER ;
