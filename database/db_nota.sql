@@ -340,4 +340,13 @@ BEGIN
     WHERE A03_codigo = OLD.A03_codigo;
 END$$
 
+CREATE TRIGGER Trg_DepoisUpdPedido
+    AFTER UPDATE ON PEDIDO_02
+    FOR EACH ROW
+BEGIN
+    UPDATE CLIENTE_01
+    SET A01_credito = A01_credito + OLD.A02_valorTotal - NEW.A02_valorTotal
+    WHERE A01_codigo = NEW.A01_codigo;
+END$$
+
 DELIMITER ;

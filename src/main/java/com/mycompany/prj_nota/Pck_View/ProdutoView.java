@@ -152,6 +152,11 @@ public class ProdutoView extends javax.swing.JFrame {
         });
 
         clienteMenu.setText("Clientes");
+        clienteMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clienteMenuMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(clienteMenu);
 
         notaMenu.setText("Notas");
@@ -281,6 +286,13 @@ public class ProdutoView extends javax.swing.JFrame {
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
         atualizarTabelaProdutos();
     }//GEN-LAST:event_consultarButtonActionPerformed
+
+    private void clienteMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clienteMenuMouseClicked
+        // TODO add your handling code here:
+        NotaView objNotaView = new NotaView();
+        objNotaView.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_clienteMenuMouseClicked
     private void atualizarTabelaProdutos() {
         List<ProdutoModel> produtos = objProdutoControl.consultarProdutos();
         DefaultTableModel objTableModel = (DefaultTableModel) jTable2.getModel();
